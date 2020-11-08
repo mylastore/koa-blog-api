@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> controllers/user.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#areaOfTriangle">areaOfTriangle</a></li><li><a href="global.html#dateFormat">dateFormat</a></li><li><a href="global.html#randomNumber">randomNumber</a></li></ul></div><div class="category"><h2 class="cat">c Api</h2><h3>Classes</h3><ul><li><a href="UserController.html">UserController</a></li></ul></div><div class="category"><h2 class="cat">c Seeding Data</h2><h3>Classes</h3><ul><li><a href="SeedData.html">SeedData</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>controllers/user.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import rand from 'randexp'
+import bcrypt from 'bcrypt'
+import User from '../models/User'
+import Quote from '../models/Quote'
+import utils from '../middleware/utils'
+import _data from '../middleware/data'
+import shortId from 'shortid'
+import { registerValidator, loginValidator } from '../middleware/validators'
+
+const expiration = process.env.NODE_ENV === 'development' ? 86400000 : 86400000
+
+/**
+ * User controller - Class
+ * @category Api
+ */
+class UserController {
+
+  async register(ctx) {
+    const {email, password, name} = ctx.request.body
+
+    const avatar = utils.gravatar(email)
+    const username = shortId.generate()
+    const obj = {name, email, password, avatar, username}
+
+    if (!email || !password || !name) {
+      ctx.throw(422, 'Incomplete data received')
+    }
+
+    // Next do validation on the input
+    const validator = registerValidator.validate(ctx.request.body);
+    if (validator.error) {
+      ctx.throw(422, {error: validator.error.details[0].message })
+    }
+
+    try {
+      const user = await new User(obj).save()
+      const settingId = process.env.SETTING_ID
+      const notification = process.env.SEND_MAIL
+
+      if (user) {
+        // Here we are checking admin settings
+        // to see if we send the new user email notification to the admin ONLY
+        // this data is store in the root of this directory under .data/settings directory
+        _data.read('settings', settingId, function (err, checkData) {
+          if (!err &amp;&amp; checkData &amp;&amp; checkData.newUser === true &amp;&amp; notification === 'yes') {
+            utils.sendNewUserEmail(email)
+          }
+        })
+
+        // set the ctx.state "user"
+        ctx.state.user = user.toAuthJSON()
+        ctx.cookies.set('token', ctx.state.user.token, { expiresIn: expiration });
+        return ctx.body = ctx.state.user
+      }
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async login(ctx) {
+    const {password, email } = ctx.request.body
+
+    if (!email || !password) {
+      ctx.throw(422, 'Incomplete data received')
+    }
+
+    // Next do validation on the input
+    const validator = loginValidator.validate(ctx.request.body);
+    if (validator.error) {
+      ctx.throw(422, {error: validator.error.details[0].message })
+    }
+
+    try {
+      const user = await User.findOne({email: email})
+      const comparePassword = await user.comparePassword(password)
+      if (!user || !comparePassword) {
+        ctx.throw(422, 'Email or password is invalid')
+      }
+      // set the ctx.state "user"
+      ctx.state.user = user.toAuthJSON()
+      ctx.cookies.set('token', ctx.state.user.token, { expiresIn: expiration });
+      return ctx.body = ctx.state.user
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async logOut(ctx) {
+    ctx.state.user = null
+    ctx.body = 'Success!'
+  }
+
+  async forgot(ctx) {
+    const email = ctx.request.body.email
+    const host = process.env.REQUEST_HOST
+    const token = new rand(/[a-zA-Z0-9_-]{64,64}/).gen()
+    const resetExpiration = Date.now() + 3600000 // 1 hour
+    if (!email) {
+      ctx.throw(404, 'Incomplete data received')
+    }
+    let resetData = {
+      passwordResetToken: token,
+      passwordResetExpires: resetExpiration,
+    }
+    try {
+      const result = await User.findOneAndUpdate({email: email}, resetData)
+      if (!result) {
+        ctx.throw(422, "Email not found!")
+      }
+      utils.sendEmailForgotPassword(email, token, host)
+      ctx.body = `Email with reset password instructions was sent to ${email}`
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async resetPassword(ctx) {
+    const passwordResetToken = ctx.request.body.passwordResetToken
+    let password = ctx.request.body.password
+    let tokenValid = await User.findOne({
+      passwordResetToken: passwordResetToken,
+    })
+    if (!tokenValid) {
+      ctx.throw(422, 'Password reset token is invalid or has expired.')
+    }
+    password = await bcrypt.hash(password, 10)
+    let userObj = {password: password, passwordResetToken: null, passwordResetExpires: null}
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        {passwordResetToken: passwordResetToken},
+        userObj
+      )
+      if (!updatedUser) {
+        ctx.throw(422, 'User not found')
+      }
+      ctx.body = 'Password was updated successfully! '
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async updatePassword(ctx) {
+    const userId = ctx.request.body._id
+    let password = ctx.request.body.password
+    password = await bcrypt.hash(password, 10)
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        {_id: userId},
+        {password: password}
+      )
+      if (!updatedUser) {
+        ctx.throw(422, 'Something went wrong, please try again.')
+      }
+      ctx.body = 'Success!'
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  // if user is authorize sends the user data
+  async account(ctx) {
+    ctx.body = ctx.state.user
+  }
+
+  async updateAccount(ctx) {
+    const userData = ctx.request.body
+    const userId = userData._id
+    if (userData.email) {
+      userData.avatar = utils.gravatar(userData.email)
+    }
+    try {
+      const updatedUser = await User.findOneAndUpdate({_id: userId}, userData, {new: true})
+      if (!updatedUser) {
+        ctx.throw(422, 'Something went wrong, please try again later.')
+      }
+      ctx.body = updatedUser.userToJSON()
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async deleteUser(ctx) {
+    try {
+      const userId = ctx.request.body._id
+      const deleteUser = await User.deleteOne({_id: userId})
+      if (!deleteUser) {
+        ctx.throw(422, 'Oops something went wrong, please try again.')
+      }
+      ctx.body = 'Success!'
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async createQuote(ctx) {
+    const data = ctx.request.body
+    const quote = new Quote(data)
+    const name = data.name
+    const email = data.email
+    const tel = data.tel || ''
+    const site = data.site
+    const msg = data.msg
+    const reason = 'New Quote'
+    try {
+      const savedQuote = await quote.save()
+      if (!savedQuote) {
+        ctx.throw(422, 'Quote could not be send. Please try again later.')
+      }
+      utils.sendEmailQuote(name, email, tel, site, msg, reason)
+      ctx.body = 'Success!'
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async sendEmail(ctx) {
+    const data = ctx.request.body
+    const name = data.name
+    const email = data.email
+    const tel = data.tel
+    const site = data.site
+    const msg = data.msg
+    const reason = 'New Email'
+    utils.sendEmail(name, email, tel, site, msg, reason, function (err) {
+      if (err) {
+        ctx.throw(422, 'Oops! something went wrong, please try again.')
+      }
+      ctx.body = 'Email was sent!'
+    })
+  }
+
+  // ADMIN USER CONTROLLER
+  async adminGetUsers(ctx) {
+    const perPage = 2
+    const page = ctx.params.page || 1
+    try {
+      const users = await User.find({})
+        .select('-password')
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+      if (!users) {
+        ctx.throw(422, 'Something went wrong, please try again.')
+      }
+      if (users.length &lt;= 0) {
+        ctx.throw(422, 'No users found!')
+      }
+      const totalItems = await User.countDocuments({})
+      return (ctx.body = {
+        totalItems: totalItems,
+        perPage: perPage,
+        users: users,
+      })
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+
+  async adminGetUser(ctx) {
+    try {
+      const user = await User.findById({_id: ctx.params._id}).select({
+        profile: 1,
+        email: 1,
+        role: 1,
+        avatar: 1,
+        settings: 1,
+        createdAt: 1,
+      })
+      if (!user) {
+        ctx.throw(422, 'Something went wrong, please try again.')
+      }
+      return ctx.body = user
+    } catch (error) {
+      return ctx.throw(error)
+    }
+  }
+
+  /**
+   * update setting function
+   * @param {number} userId user id
+   * @param {boolean} newUser new user email true or false
+   * @param {boolean} newQuote new quote email true or false
+   *  @throws {Object} error
+   *  @return {Object} user object
+   */
+  async updateSettings(ctx) {
+    try {
+      const userData = ctx.request.body
+      const userId = userData.userId
+      if (!userData) ctx.throw(422, 'Invalid data!')
+      const obj = {
+        settings: {
+          newUser: userData.newUser,
+          newQuote: userData.newQuote,
+        },
+      }
+      const user = await User.findByIdAndUpdate({_id: userId}, obj, {new: true})
+      console.log('user ',user)
+      if (!user) ctx.throw(422, 'Could not update user settings')
+      const settingId = process.env.SETTING_ID
+
+      if (user &amp;&amp; settingId) {
+        const settingsObject = {
+          settingId: settingId,
+          newUser: userData.newUser,
+          newQuote: userData.newQuote,
+        }
+        // Update local settings file
+        _data.update('settings', settingId, settingsObject, function (err) {
+          if (err) {
+            ctx.throw(422, 'Could not update settings.')
+          }
+        })
+        ctx.body = user.userToJSON(ctx)
+      }
+    } catch (error) {
+      ctx.throw(error)
+    }
+  }
+}
+
+export default UserController
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

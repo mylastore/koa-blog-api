@@ -1,0 +1,39 @@
+@import "bootstrap/bootstrap.css";
+
+.Site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.Site-content {
+    flex: 1;
+}
+
+.flex-container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row-item {
+    width: auto;
+}
+
+.flex-item {
+    background-color: tomato;
+    padding: 5px;
+    margin: 10px;
+    line-height: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+}
