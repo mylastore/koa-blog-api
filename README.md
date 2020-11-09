@@ -38,6 +38,7 @@ Click [here](https://mylastore.com/) to view the app live.
 
 ## Installing / Getting started
 Important: create a root directory ./logs/log this is where the logs will be saved and copy .example.env to .env and add all your credentials.
+Make sure you have redis up and running for rate limiting to work. If you prefer not to run it on development you can just uncomment redis ratelimit on the indes.js file.
 
 ``` bash
 # install dependencies
