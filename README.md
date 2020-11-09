@@ -37,6 +37,7 @@ Click [here](https://mylastore.com/) to view the app live.
 - And more...
 
 ## Installing / Getting started
+Important: create a root directory ./logs/log this is where the logs will be saved and copy .example.env to .env and add all your credentials.
 
 ``` bash
 # install dependencies
@@ -67,7 +68,7 @@ You will need to make sure you have redis running (for the rate-limiter). I use 
 
 ## General Information
 
-This backend has example data users, blogs and some admin settings.  This project ha a fully fleshed-out user login/signup/forgot/reset authentication/email verification system using JWT.
+This backend has example data for users, blogs and an admin panel.  This project ha a fully fleshed-out user login/signup/forgot/reset authentication/email verification system using JWT.
 
 You'll need to create a `.env` file and place it in the root of your directory. Take a look at `example.env` and add your information as needed. For `JWT_ACCESS_TOKEN_EXPIRATION_TIME` you can set it to 5m, 5w, 5d etc - although 5m is what I'm using at the moment. Note - we don't set the NODE_ENV variable in the `.env` - we set it in the npm scripts. This lets us specifically set different environments as needed. Also make sure to set the `JWT_SECRET` variable - something random around 32 characters.
 
