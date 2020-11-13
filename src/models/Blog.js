@@ -35,6 +35,9 @@ const schema = new mongoose.Schema({
   avatar: {
    type: String,
   },
+  galID: [{
+    type: String
+  }],
   imgID: String,
   categories: [{
     type: ObjectId,

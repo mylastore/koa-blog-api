@@ -112,10 +112,15 @@ app.use(userAgent)
 //For managing body. We're only allowing json.
 //app.use(bodyParser({enableTypes: ['json']}))
 app.use(koaBody({
+  onError: (err => {
+    if(err){
+      throw new Error('File max size is 5mb')
+    }
+  }),
   formLimit: '1mb',
   multipart: true, // Allow multiple files to be uploaded
   formidable: {
-    maxFileSize: 2 * 1024 * 1024, // max size 2mb
+    maxFileSize: 5 * 1024 * 1024, // max size 5mb
     keepExtensions: true, //  Extensions to save images
   }
 }))

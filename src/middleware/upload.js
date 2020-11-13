@@ -41,22 +41,6 @@ function mkDirByPathSync(targetDir, opts) {
   }, initDir);
 }
 
-
-//Save file
-const saveFile = (file, path) => {
-  return new Promise((resolve, reject) => {
-    let render = fs.createReadStream(file);
-    // Create a write stream
-    let upStream = fs.createWriteStream(path);
-    render.pipe(upStream);
-    upStream.on('finish', () => {
-      resolve(path)
-    });
-    upStream.on('error', (err) => {
-      reject(err)
-    });
-  })
-}
 /**
  * File upload
  * ps Generate file name
@@ -70,8 +54,6 @@ const uploadImg = async (ctx, next) => {
   }
 
   let file = ctx.request.files.avatar
-
-
   let fileName = file.name.replace(/\s/g, '').split('.').slice(0, -1).join('.')
   let target = conf.BASE_DIR + date
   let filePath = path.join(conf.BASE_DIR, date, fileName + '.webp') //Stitching file names
@@ -79,23 +61,20 @@ const uploadImg = async (ctx, next) => {
   let avatarUrl = path.join(date, fileName + '.webp')
 
   try{
-    await mkDirByPathSync(target) //Create a file directory
-    const output = await saveFile(file.path, filePath)
+    await mkDirByPathSync(target)
 
-    await sharp(ctx.request.files.avatar.path)
+    const result = await sharp(ctx.request.files.avatar.path)
       .resize(1080, 200)
-      .toFile(output, (err, info) => {
-        if(err){
-          ctx.throw(422, err)
-        }
-        console.log('image was resize and converted to webp')
-      })
+      .webp({quality: 80})
+      .toFile(filePath)
 
-    let imgObj = {
-      imgID: imgID,
-      avatarUrl: avatarUrl
+    if(result){
+      let imgObj = {
+        imgID: imgID,
+        avatarUrl: avatarUrl
+      }
+      ctx.request.files.avatar.path = imgObj
     }
-    ctx.request.files.avatar.path = imgObj
     return next()
   }catch (e){
     ctx.throw(422, {message: 'Failed to upload file'})

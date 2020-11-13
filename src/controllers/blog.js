@@ -7,15 +7,23 @@ import mongoError from '../middleware/mongoErrors'
 import {smartTrim, isObjectEmpty} from '../middleware/utils'
 import fs from 'fs'
 
+let galID =[]
 
 class BlogController {
 
-  async deleteImgDir(dir, ctx, next) {
-    try {
-      await fs.rmdirSync(dir, {recursive: true});
-      return next()
-    } catch (err) {
-      ctx.throw(422, err)
+  async blogImages(ctx) {
+    galID.push(ctx.request.files.avatar.path.galID)
+    const imgUrl = ctx.request.files.avatar.path.imgUrl
+    const imgName = ctx.request.files.avatar.path.imgName
+    const imgSize = ctx.request.files.avatar.path.imgSize
+    ctx.body = {
+      result: [
+        {
+          url: imgUrl,
+          name: imgName,
+          size: imgSize
+        },
+      ],
     }
   }
 
@@ -32,6 +40,7 @@ class BlogController {
       imageURl = ctx.request.files.avatar.path.avatarUrl
       imgID = ctx.request.files.avatar.path.imgID
     }
+
     if (categories) {
       categories = categories.trim().split(/\s*,\s*/)
     }
@@ -68,6 +77,7 @@ class BlogController {
       excerpt: excerpt,
       avatar: imageURl,
       imgID: imgID,
+      galID: galID,
       postedBy: ctx.state.user._id
     })
 
@@ -77,10 +87,10 @@ class BlogController {
     }
     try {
       ctx.body = await blog.save()
+      galID = []
     } catch (err) {
       ctx.throw(422, mongoError(err))
     }
-
   }
 
   async updateBlog(ctx, next) {
@@ -225,6 +235,15 @@ class BlogController {
         await res.remove()
         return ctx.body = {status: 200, message: 'Success!'}
       }
+    } catch (err) {
+      ctx.throw(422, err)
+    }
+  }
+
+  async deleteImgDir(dir, ctx, next) {
+    try {
+      await fs.rmdirSync(dir, {recursive: true});
+      return next()
     } catch (err) {
       ctx.throw(422, err)
     }

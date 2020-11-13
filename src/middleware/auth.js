@@ -43,7 +43,7 @@ async function validateJWT(ctx, next) {
 auth.isUser = async (ctx, next) => {
   await validateJWT(ctx)
   try {
-    if (role === 'user' || role === 'admin') {
+    if (role) {
       return next()
     }
     ctx.throw(401, {message: 'Not sufficient permissions'})
@@ -66,11 +66,11 @@ auth.isAdmin = async (ctx, next) => {
 
 auth.isBlogAuthor = async (ctx, next) => {
   const slug = ctx.params.slug
-  const getId = await Blog.findOne({slug: slug}).select('postedBy')
-  if (!getId) {
+  const user = await Blog.findOne({slug: slug}).select('postedBy')
+  if (!user) {
     ctx.throw(404, 'Only author can perform this operation.')
   }
-  const postedById = getId.postedBy._id.toString()
+  const postedById = user.postedBy._id.toString()
   const currentUserId = ctx.state.user._id.toString()
   const isAuthor = postedById === currentUserId
 
