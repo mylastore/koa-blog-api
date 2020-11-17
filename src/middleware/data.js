@@ -46,8 +46,6 @@ lib.create = function(dir, file, data, callback) {
 
 // Read data from a file
 lib.read = function(dir, file, callback) {
-    console.log('dir ', dir)
-    console.log('lib.baseDir ', lib.baseDir)
     fs.readFile(lib.baseDir + dir + '/' + file + '.json', 'utf8', function(
         err,
         data

@@ -1,15 +1,11 @@
-/*
-    File upload
- */
-const fs = require('fs');
-const path = require('path');
-const dateFormat = require('../middleware/dateFormat.js')
-const sharp = require('sharp')
-const conf = {
-  BASE_DIR: 'upload/',
-  MAXFILESIZE: 200 * 1024 * 1024, //Upload file size
-}
-const { isObjectEmpty } = require('../middleware/utils')
+
+import fs from 'fs'
+import path from 'path'
+import dateFormat from './dateFormat'
+import sharp from 'sharp'
+import {isObjectEmpty} from './utils'
+
+const BASE_DIR = 'upload/'
 
 function mkDirByPathSync(targetDir, opts) {
   const isRelativeToScript = opts && opts.isRelativeToScript;
@@ -54,14 +50,19 @@ const uploadImg = async (ctx, next) => {
   }
 
   let file = ctx.request.files.avatar
+  const picReg = /\.(png|jpeg?g|gif|svg|webp|jpg)$/i;
+  if (!picReg.test(file.name)) {
+    ctx.throw(422, "File format not supported")
+  }
+
   let fileName = file.name.replace(/\s/g, '').split('.').slice(0, -1).join('.')
-  let target = conf.BASE_DIR + date
-  let filePath = path.join(conf.BASE_DIR, date, fileName + '.webp') //Stitching file names
+  let target = BASE_DIR + date
+  let filePath = path.join(BASE_DIR, date, fileName + '.webp') //Stitching file names
   let imgID = path.join(date)
   let avatarUrl = path.join(date, fileName + '.webp')
 
   try{
-    await mkDirByPathSync(target)
+    mkDirByPathSync(target)
 
     const result = await sharp(ctx.request.files.avatar.path)
       .resize(1080, 200)
@@ -81,6 +82,4 @@ const uploadImg = async (ctx, next) => {
   }
 }
 
-module.exports = {
-  uploadImg
-};
+export default uploadImg

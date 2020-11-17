@@ -67,10 +67,7 @@ class QuoteController {
 
   async contactAuthor(ctx) {
     const data = ctx.request.body
-    console.log('data? ',data)
-
     await utils.sendAuthorEmail(data).then(() => {
-
       ctx.body = {status: 200, message: 'Email was sent.'}
     })
 

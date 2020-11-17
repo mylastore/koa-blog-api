@@ -10,7 +10,7 @@ This is a starter boilerplate inspired by [koa-vue-notes-api](https://github.com
 Frontends - Next.js/React and Svelte soon. (work in progress...)
 
 ## Example live app
-Click [here](https://mylastore.com/) to view the app live. 
+Work in progress... 
 
 ## Features
 - Koa 2.13.0

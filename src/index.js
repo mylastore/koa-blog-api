@@ -5,7 +5,7 @@ import Koa from 'koa'
 import koaBody from 'koa-body'
 import koaStatic from 'koa-static'
 import cors from 'kcors'
-import logger from './logs/log'
+import {logger} from './logs/logs'
 import userAgent from 'koa-useragent'
 import ratelimit from 'koa-ratelimit'
 import redis from 'ioredis'
@@ -49,22 +49,22 @@ require('koa-qs')(app, 'extended')
 
 app.use(helmet())
 
-//Here's the rate limiter
-app.use(
-    ratelimit({
-        db: new redis(),
-        duration: 60000,
-        errorMessage:
-            "Hmm, you seem to be doing that a bit too much - wouldn't you say?",
-        id: ctx => ctx.ip,
-        headers: {
-            remaining: 'Rate-Limit-Remaining',
-            reset: 'Rate-Limit-Reset',
-            total: 'Rate-Limit-Total',
-        },
-        max: 100,
-    })
-)
+// //Here's the rate limiter
+// app.use(
+//     ratelimit({
+//         db: new redis(),
+//         duration: 60000,
+//         errorMessage:
+//             "Hmm, you seem to be doing that a bit too much - wouldn't you say?",
+//         id: ctx => ctx.ip,
+//         headers: {
+//             remaining: 'Rate-Limit-Remaining',
+//             reset: 'Rate-Limit-Reset',
+//             total: 'Rate-Limit-Total',
+//         },
+//         max: 100,
+//     })
+// )
 
 
 //Let's log each successful interaction. We'll also log each error - but not here,
@@ -109,20 +109,31 @@ app.use(cors({
 //For useragent detection
 app.use(userAgent)
 
-//For managing body. We're only allowing json.
-//app.use(bodyParser({enableTypes: ['json']}))
 app.use(koaBody({
-  onError: (err => {
-    if(err){
-      throw new Error('File max size is 5mb')
-    }
-  }),
   formLimit: '1mb',
   multipart: true, // Allow multiple files to be uploaded
   formidable: {
     maxFileSize: 5 * 1024 * 1024, // max size 5mb
     keepExtensions: true, //  Extensions to save images
-  }
+    onFileBegin: (name, file) => {
+      const fileName = file.name;
+      const picReg = /\.(png|jpeg?g|gif|svg|webp|jpg)$/i;
+      if(!picReg.test(fileName)){
+        new Error('File not supported')
+      }
+    },
+    onEnd: (name, file) => {
+      console.log('name? ',name)
+      console.log('size.size ? ',file.size)
+    }
+  },
+  onError: ((err) => {
+    if(err){
+      throw err
+    }
+    new Error('Oops! something went wrong. Try again.')
+  })
+
 }))
 
 // Configuring Static Resource Loading Middleware

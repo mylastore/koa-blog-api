@@ -1,5 +1,7 @@
 'use strict'
 
+import rmdir from "../middleware/removeDirectory"
+
 require('dotenv').config()
 
 import mongoose from 'mongoose'
@@ -62,6 +64,8 @@ class SeedData {
     }
 
     async seedDb() {
+        // remove all uploaded images
+        await rmdir('upload', { removeContentOnly: true })
         await this.cleanDb()
         await this.pushDataToDb()
     }

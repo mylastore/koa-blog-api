@@ -1,17 +1,17 @@
 import Router from 'koa-router'
 import auth from '../middleware/auth'
 import BlogController from '../controllers/blog'
-import {uploadImg} from '../middleware/upload'
+import uploadImg from '../middleware/upload'
 import uploadImages from '../middleware/editorImageUpload'
 
 const router = new Router()
 const controller = new BlogController()
 
-router.post('/api/blog/images', uploadImages, auth.isUser, async(ctx) => {
-  await controller.blogImages(ctx)
+router.post('/api/blog/images', auth.isUser, uploadImages, async(ctx, next) => {
+  await controller.blogImages(ctx, next)
 })
 
-router.post('/api/blog', uploadImg, auth.isUser, async(ctx) => {
+router.post('/api/blog', auth.isUser, uploadImg,  async(ctx) => {
   await controller.createBlog(ctx)
 })
 

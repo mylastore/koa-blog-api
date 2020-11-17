@@ -21,7 +21,6 @@ class UserController {
 
   async accountActivation(ctx) {
     const {name, email, password} = ctx.request.body
-    console.log(email)
     try {
       const user = await User.findOne({email})
       if (user) {
@@ -352,7 +351,6 @@ class UserController {
         },
       }
       const user = await User.findByIdAndUpdate({_id: userId}, obj, {new: true})
-      console.log('user ', user)
       if (!user) ctx.throw(422, 'Could not update user settings')
       const settingId = process.env.SETTING_ID
 

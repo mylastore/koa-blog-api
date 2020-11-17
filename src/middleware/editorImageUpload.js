@@ -6,20 +6,19 @@ import {isObjectEmpty} from './utils'
 
 const BASE_DIR = 'upload/'
 
-
 function mkDirByPathSync(targetDir, opts) {
-  const isRelativeToScript = opts && opts.isRelativeToScript
-  const sep = path.sep
-  const initDir = path.isAbsolute(targetDir) ? sep : ''
-  const baseDir = isRelativeToScript ? __dirname : '.'
+  const isRelativeToScript = opts && opts.isRelativeToScript;
+  const sep = path.sep;
+  const initDir = path.isAbsolute(targetDir) ? sep : '';
+  const baseDir = isRelativeToScript ? __dirname : '.';
 
   return targetDir.split(sep).reduce((parentDir, childDir) => {
-    const curDir = path.resolve(baseDir, parentDir, childDir)
+    const curDir = path.resolve(baseDir, parentDir, childDir);
     try {
-      fs.mkdirSync(curDir)
+      fs.mkdirSync(curDir);
     } catch (err) {
       if (err.code === 'EEXIST') { // curDir already exists!
-        return curDir
+        return curDir;
       }
 
       // To avoid `EISDIR` error on Mac and `EACCES`-->`ENOENT` and `EPERM` on Windows
@@ -32,16 +31,11 @@ function mkDirByPathSync(targetDir, opts) {
         throw err; // Throw if it's just the last created dir.
       }
     }
-    return curDir
-  }, initDir)
+
+    return curDir;
+  }, initDir);
 }
 
-
-/**
- * File upload
- * ps Generate file name
- * File paths are stored according date and time
- */
 const uploadImages = async (ctx, next) => {
   const time = Date.parse(new Date())
   let date = dateFormat.dateFormat(time, 'yyyyMMddhhmmss')
@@ -50,29 +44,36 @@ const uploadImages = async (ctx, next) => {
   }
 
   let file = ctx.request.files.avatar
+  const picReg = /\.(png|jpeg?g|gif|svg|webp|jpg)$/i;
+  if (!picReg.test(file.name)) {
+    ctx.throw(422, "File format not supported")
+  }
+
   let fileName = file.name.replace(/\s/g, '').split('.').slice(0, -1).join('.')
-  let target = BASE_DIR + 'x*x7erte5-' + date
-  let galID = 'x*x7erte5-' + date
+  let target = BASE_DIR + 'img-' + date
+  let galID = 'img-' + date
   let filePath = path.join(BASE_DIR, galID, fileName + '.webp') //Stitching file names
   let fileUrl = path.join(galID, fileName + '.webp')
 
-  mkDirByPathSync(target)
-  try{
-    const result = await sharp(file.path)
-      .resize(800)
+  try {
+    mkDirByPathSync(target)
+    const result = await sharp(ctx.request.files.avatar.path)
+      .resize(800, 400)
       .webp({quality: 80})
       .toFile(filePath)
 
-    ctx.request.files.avatar.path = {
-      galID: galID,
-      imgUrl: `http://localhost:8000/${fileUrl}`,
-      imgName: fileName,
-      imgSize: result.size
+    if (result) {
+      ctx.request.files.avatar.path = {
+        galID: galID,
+        imgUrl: `http://localhost:8000/${fileUrl}`,
+        imgName: fileName,
+        imgSize: result.size
+      }
     }
-  }catch (err){
+    return next()
+  } catch (err) {
     ctx.throw(422, err)
   }
-  return next()
 }
 
 export default uploadImages

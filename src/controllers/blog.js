@@ -4,32 +4,37 @@ import Tag from '../models/Tag'
 import slugify from "slugify"
 import stripHtml from 'string-strip-html'
 import mongoError from '../middleware/mongoErrors'
-import {smartTrim, isObjectEmpty} from '../middleware/utils'
-import fs from 'fs'
-
-let galID =[]
+import {isObjectEmpty} from '../middleware/utils'
+import rmdir from "../middleware/removeDirectory"
+import uploadImages from '../middleware/editorImageUpload'
 
 class BlogController {
+  constructor() {
+    this.galID = []
+  }
 
-  async blogImages(ctx) {
-    galID.push(ctx.request.files.avatar.path.galID)
-    const imgUrl = ctx.request.files.avatar.path.imgUrl
-    const imgName = ctx.request.files.avatar.path.imgName
-    const imgSize = ctx.request.files.avatar.path.imgSize
-    ctx.body = {
-      result: [
-        {
-          url: imgUrl,
-          name: imgName,
-          size: imgSize
-        },
-      ],
+  async blogImages(ctx, next) {
+    try{
+      this.galID.push(ctx.request.files.avatar.path.galID)
+      const imgUrl = ctx.request.files.avatar.path.imgUrl
+      const imgName = ctx.request.files.avatar.path.imgName
+      const imgSize = ctx.request.files.avatar.path.imgSize
+      return ctx.body = {
+        result: [
+          {
+            url: imgUrl,
+            name: imgName,
+            size: imgSize
+          },
+        ],
+      }
+    }catch (err){
+      ctx.throw(422, err)
     }
   }
 
   async createBlog(ctx) {
     let {title, content, categories, tags} = ctx.request.body
-    let excerptContent
     let slug
     let metaDescription
     let excerpt
@@ -57,10 +62,7 @@ class BlogController {
 
     if (content) {
       metaDescription = stripHtml(content.substring(0, 160)).result
-      excerptContent = stripHtml(content).result
-      if (excerptContent) {
-        excerpt = smartTrim(excerptContent, 200, '', '...')
-      }
+      excerpt = stripHtml(content.substring(0, 200)).result
     }
     if (title) {
       slug = slugify(title).toLowerCase()
@@ -77,7 +79,7 @@ class BlogController {
       excerpt: excerpt,
       avatar: imageURl,
       imgID: imgID,
-      galID: galID,
+      galID: this.galID,
       postedBy: ctx.state.user._id
     })
 
@@ -87,7 +89,7 @@ class BlogController {
     }
     try {
       ctx.body = await blog.save()
-      galID = []
+      this.galID = []
     } catch (err) {
       ctx.throw(422, mongoError(err))
     }
@@ -101,7 +103,7 @@ class BlogController {
       data.metaTitle = `${data.title} | ${process.env.APP_NAME}`
     }
     if (data.content) {
-      data.excerpt = smartTrim(data.content, 200, '', '...')
+      data.excerpt = stripHtml(data.content.substring(0, 200)).result
       data.metaDescription = stripHtml(data.content.substring(0, 160)).result
     }
     if (data.categories) {
@@ -115,8 +117,24 @@ class BlogController {
       data.imgID = ctx.request.files.avatar.path.imgID
     }
 
+    // if new image push to galID array on DB
+    if (this.galID.length) {
+      await Blog.findOneAndUpdate({
+        slug: slug
+      }, {
+        $push: {
+          galID: this.galID
+        }
+      })
+    }
+
     try {
-      ctx.body = await Blog.findOneAndUpdate({slug: slug}, data, {new: true, runValidators: true, context: 'query'})
+      const res = await Blog.findOneAndUpdate({slug: slug}, data, {new: true, runValidators: true, context: 'query'})
+      if (res) {
+        ctx.body = res
+        this.galID = []
+      }
+
     } catch (err) {
       ctx.throw(422, mongoError(err))
     }
@@ -124,20 +142,17 @@ class BlogController {
   }
 
   async deleteImg(ctx, next) {
-    try{
+    try {
       const blog = await Blog.findOne({slug: ctx.params.slug})
-
-      if(blog){
+      if (blog) {
         blog.avatar = 'seo-default.webp'
         const update = await blog.save()
-
-        if(update){
-          let dir = `upload/${blog.imgID}`
-          await this.deleteImgDir(dir, ctx, next)
+        if (update) {
+          await rmdir(`upload/${blog.imgID}`)
           ctx.body = {status: 200, message: 'Image was updated.'}
         }
       }
-    }catch (err){
+    } catch (err) {
       ctx.throw(422, err)
     }
   }
@@ -227,23 +242,20 @@ class BlogController {
     try {
       const res = await Blog.findOne({slug})
       if (res && res.imgID) {
-        let dir = `upload/${res.imgID}`
-        await this.deleteImgDir(dir, ctx, next)
-        await res.remove()
-        return ctx.body = {status: 200, message: 'Success!'}
-      } else {
+        await rmdir(`upload/${res.imgID}`)
         await res.remove()
         return ctx.body = {status: 200, message: 'Success!'}
       }
-    } catch (err) {
-      ctx.throw(422, err)
-    }
-  }
+      if (res && res.galID) {
+        for (let filename of res.galID) {
+          await rmdir(`upload/${filename}`, )
+        }
+        await res.remove()
+        return ctx.body = {status: 200, message: 'Success!'}
+      }
+      await res.remove()
+      return ctx.body = {status: 200, message: 'Success!'}
 
-  async deleteImgDir(dir, ctx, next) {
-    try {
-      await fs.rmdirSync(dir, {recursive: true});
-      return next()
     } catch (err) {
       ctx.throw(422, err)
     }

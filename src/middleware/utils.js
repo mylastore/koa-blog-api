@@ -137,15 +137,6 @@ utils.sendAuthorEmail = async function (data){
 
 }
 
-utils.smartTrim = function (str, length, delimiter, appendix) {
-  if (str.length <= length) return str;
-  let trimmedStr = str.substr(0, length + delimiter.length);
-  let lastDelimiterIndex = trimmedStr.lastIndexOf(delimiter);
-  if (lastDelimiterIndex >= 0) trimmedStr = trimmedStr.substr(0, lastDelimiterIndex);
-  if (trimmedStr) trimmedStr += appendix;
-  return trimmedStr;
-}
-
 utils.gravatar = email => {
   const size = 200
   if (!email) return `https://gravatar.com/avatar/?s=${size}&d-mp`
