@@ -214,10 +214,6 @@ class UserController {
 
   async updateAccount(ctx) {
     const body = ctx.request.body
-
-    if (body.email) {
-      body.avatar = utils.gravatar(body.email)
-    }
     if (body.username) {
       body.username = body.username.replace(/\s/g, "")
     }
@@ -243,6 +239,8 @@ class UserController {
       if (!deleteUser) {
         ctx.throw(422, 'Oops something went wrong, please try again.')
       }
+      ctx.state.user = null
+      ctx.cookies.set('token', null)
       ctx.body = 'Success!'
     } catch (error) {
       ctx.throw(error)

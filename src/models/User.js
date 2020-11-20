@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
       , "Website url format is incorrect."
     ]
   },
-  avatar: String,
+  avatar: {type: String, default: 'avatar.jpg'},
   settings: {
     newUser: {type: Boolean, default: false},
     newQuote: {type: Boolean, default: false},
@@ -93,6 +93,7 @@ userSchema.methods.toAuthJSON = function () {
       avatar: this.avatar,
       username: this.username,
       createdAt: this.createdAt,
+      gender: this.gender,
       settings: this.settings,
       token: this.generateJWT()
     }
@@ -106,6 +107,7 @@ userSchema.methods.toAuthJSON = function () {
     website: this.website,
     location: this.location,
     avatar: this.avatar,
+    gender: this.gender,
     username: this.username,
     createdAt: this.createdAt,
     token: this.generateJWT()
