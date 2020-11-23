@@ -38,7 +38,7 @@ class UserController {
     const {token} = ctx.request.body
     await jwt.verify(token, userActivationSecret, async function (err, decoded) {
       if (err) {
-        ctx.throw(401, "Link is expired. Please signup again.")
+        ctx.throw(401, {message: "Link is expired. Please signup again."})
       }
       const {name, email, password} = decoded
       const avatar = utils.gravatar(email)
@@ -125,7 +125,6 @@ class UserController {
       ctx.throw(422, err)
     }
   }
-
 
   async logOut(ctx) {
     ctx.state.user = null
@@ -328,6 +327,14 @@ class UserController {
     }
   }
 
+  async getStats(ctx){
+    try{
+      ctx.body = await User.count({})
+    }catch (err){
+      ctx.throw(422, err)
+    }
+  }
+
   /**
    * update setting function
    * @param {number} userId user id
@@ -363,7 +370,7 @@ class UserController {
             ctx.throw(422, 'Could not update settings.')
           }
         })
-        ctx.body = user.userToJSON(ctx)
+        ctx.body = user.toAuthJSON(ctx)
       }
     } catch (error) {
       ctx.throw(error)

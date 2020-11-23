@@ -25,7 +25,7 @@ utils.accountActivationEmail = async function (email, token) {
   }
   await sendGridMail
     .send(data)
-    .then(() => {
+    .then((res) => {
       console.log('Email sent')
     })
     .catch((err) => {

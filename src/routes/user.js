@@ -71,6 +71,10 @@ router.patch('/api/admin/update-settings', auth.isAdmin, async (ctx, next) => {
   await userController.updateSettings(ctx)
 })
 
+router.get('/api/admin/stats', auth.isAdmin, async (ctx, next) => {
+  await userController.getStats(ctx)
+})
+
 router.post('/api/user/account-activation', async (ctx, next) => {
   await userController.accountActivation(ctx)
 })
