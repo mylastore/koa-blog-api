@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
   location: {type: String, default: ''},
   about: {
     type: String,
-    minlength: [5, "About must be at least 5 characters."],
+    default: '',
     maxlength: [500, "About can't be more then 500 characters."]
   },
   website: {

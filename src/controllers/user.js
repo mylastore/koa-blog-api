@@ -1,4 +1,3 @@
-import rand from 'randexp'
 import User from '../models/User'
 import Blog from '../models/Blog'
 import Quote from '../models/Quote'
@@ -242,8 +241,8 @@ class UserController {
       ctx.state.user = null
       ctx.cookies.set('token', null)
       ctx.body = 'Success!'
-    } catch (error) {
-      ctx.throw(error)
+    } catch (err) {
+      ctx.throw(422, err)
     }
   }
 
