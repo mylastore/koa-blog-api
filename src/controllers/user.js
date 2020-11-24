@@ -145,7 +145,6 @@ class UserController {
 
     try {
       const user = await User.findOneAndUpdate(email, resetData)
-
       if (!user) {
         ctx.throw(422, 'Email not found.')
       }
@@ -158,7 +157,6 @@ class UserController {
 
   async resetPassword(ctx) {
     const {passwordResetToken, password} = ctx.request.body
-
     await jwt.verify(passwordResetToken, passwordResetSecrete, async function (err, decoded) {
       if (err) {
         ctx.throw(401, 'Expired link, Try again.')
@@ -173,18 +171,14 @@ class UserController {
         user.password = password
         user.passwordResetToken = undefined
 
-
         const res = await user.save()
         if (res) {
           ctx.body = {status: 200, message: 'Password was updated successfully.'}
         }
-
       } catch (err) {
         ctx.throw(422, err)
       }
-
     })
-
 
   }
 
