@@ -304,13 +304,14 @@ class UserController {
 
   async adminGetUser(ctx) {
     try {
-      const user = await User.findById({_id: ctx.params._id}).select({
+      const user = await User.findById({_id: ctx.params.id}).select({
         profile: 1,
         email: 1,
         role: 1,
         avatar: 1,
         settings: 1,
         createdAt: 1,
+        username: 1
       })
       if (!user) {
         ctx.throw(422, 'Something went wrong, please try again.')
@@ -349,7 +350,7 @@ class UserController {
         },
       }
       const user = await User.findByIdAndUpdate({_id: userId}, obj, {new: true})
-      if (!user) ctx.throw(422, 'Could not update user settings')
+      if (!user) ctx.throw(422, 'User not found!')
       const settingId = process.env.SETTING_ID
 
       if (user && settingId) {
