@@ -19,7 +19,6 @@ import quoteRouter from './routes/quote'
 import categoryRouter from './routes/category'
 import tagRouter from './routes/tag'
 import blogRouter from './routes/blog'
-import formRouter from './routes/form'
 
 const mongoDB = process.env.DB_URI
 
@@ -152,7 +151,5 @@ app.use(tagRouter.routes())
 app.use(tagRouter.allowedMethods())
 app.use(blogRouter.routes())
 app.use(blogRouter.allowedMethods())
-app.use(formRouter.routes())
-app.use(formRouter.allowedMethods())
 
 export default app
