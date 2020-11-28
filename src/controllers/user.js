@@ -25,10 +25,9 @@ class UserController {
       if (user) {
         ctx.throw(422, 'An active account already exist.')
       }
-      const token = jwt.sign({name, email, password}, userActivationSecret, {expiresIn: '30m'})
-      await utils.accountActivationEmail(email, token)
-      ctx.body = {status: 200, message: `An email has been sent to ${email}. Please validate to activate account.`}
-
+      const token = await jwt.sign({name, email, password}, userActivationSecret, {expiresIn: '30m'})
+      await utils.accountActivationEmail(ctx, email, token)
+      return ctx.body = {status: 200, message: `An email has been sent to ${email}. Please validate to activate account.`}
     } catch (err) {
       ctx.throw(422, err)
     }

@@ -12,7 +12,7 @@ const appName = process.env.APP_NAME
 
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-utils.accountActivationEmail = async function (email, token) {
+utils.accountActivationEmail = async function (ctx, email, token) {
   const link = `${appUrl}/user/activation/${token}`
   const data = {
     to: email,
@@ -26,7 +26,7 @@ utils.accountActivationEmail = async function (email, token) {
   await sendGridMail
     .send(data)
     .then((res) => {
-      console.log('Email sent')
+      console.log('res',res)
     })
     .catch((err) => {
       console.error(err)
