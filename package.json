@@ -21,7 +21,6 @@
     "@sendgrid/mail": "^7.3.0",
     "bcrypt": "^5.0.0",
     "better-docs": "^2.3.0",
-    "crypto": "^1.0.1",
     "dotenv": "^6.0.0",
     "esm": "^3.2.25",
     "express-session": "^1.17.0",
