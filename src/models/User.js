@@ -73,6 +73,7 @@ userSchema.methods.generateJWT = function () {
     {
       _id: this._id,
       role: this.role,
+      username: this.username,
       xsrfToken: process.env.XSRF_TOKEN,
     },
     process.env.JWT_SECRET,
@@ -83,33 +84,23 @@ userSchema.methods.generateJWT = function () {
 userSchema.methods.toAuthJSON = function () {
   if (this.role === 'admin') {
     return {
-      _id: this._id,
-      role: this.role,
-      email: this.email,
-      name: this.name,
-      about: this.about,
-      website: this.website,
-      location: this.location,
-      avatar: this.avatar,
-      username: this.username,
-      createdAt: this.createdAt,
-      gender: this.gender,
       settings: this.settings,
+      username: this.username,
+      name: this.name,
+      createdAt: this.createdAt,
+      role: this.role,
+      avatar: this.avatar,
+      _id: this._id,
       token: this.generateJWT()
     }
   }
   return {
-    _id: this._id,
-    role: this.role,
-    email: this.email,
-    name: this.name,
-    about: this.about,
-    website: this.website,
-    location: this.location,
-    avatar: this.avatar,
-    gender: this.gender,
     username: this.username,
+    name: this.name,
     createdAt: this.createdAt,
+    role: this.role,
+    _id: this._id,
+    avatar: this.avatar,
     token: this.generateJWT()
   }
 }
