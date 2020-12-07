@@ -38,6 +38,10 @@ router.post('/api/user/account', auth.isUser, async (ctx, next) => {
   await userController.account(ctx)
 })
 
+router.get('/api/user/profile/:username', auth.isUser, async (ctx, next) => {
+  await userController.getProfile(ctx)
+})
+
 router.get('/api/user/account/:username', async (ctx, next) => {
   await userController.publicProfile(ctx)
 })

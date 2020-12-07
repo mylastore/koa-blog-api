@@ -203,6 +203,21 @@ class UserController {
     ctx.body = ctx.state.user
   }
 
+  async getProfile(ctx) {
+    const username = ctx.params.username
+
+    await User.findOne({username})
+      .select('username name email location website about _id createdAt updatedAt')
+      .exec()
+      .then((res) => {
+        ctx.body = res
+      })
+      .catch((err) => {
+        ctx.throw(422, err)
+      })
+
+  }
+
   async updateAccount(ctx) {
     const body = ctx.request.body
     if (body.username) {
@@ -375,8 +390,8 @@ class UserController {
   async publicProfile(ctx) {
     const username = ctx.params.username
     let user
-
     let blogs
+
     await User.findOne({username})
       .exec()
       .then((res) => {
