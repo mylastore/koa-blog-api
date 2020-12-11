@@ -393,9 +393,10 @@ class UserController {
     let blogs
 
     await User.findOne({username})
+      .select('_id username name email avatar createdAt updatedAt')
       .exec()
       .then((res) => {
-        user = res.toAuthJSON()
+        user = res
       })
       .then(async () => {
         await Blog.find({postedBy: user._id})
