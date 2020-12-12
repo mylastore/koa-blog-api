@@ -8,7 +8,7 @@ const controller = new CategoryController()
 // const jwtMiddleware = jwt()
 const router = new Router()
 
-router.post('/api/category', auth.isAdmin, async (ctx, next) => {
+router.post('/api/category', auth.isUser, async (ctx, next) => {
   await controller.createCategory(ctx)
 })
 

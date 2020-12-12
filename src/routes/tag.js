@@ -5,7 +5,7 @@ import TagController from '../controllers/tag'
 const controller = new TagController()
 const route = new Router()
 
-route.post('/api/tag', auth.isAdmin, async (ctx, next) =>{
+route.post('/api/tag', auth.isUser, async (ctx, next) =>{
   await controller.createTag(ctx)
 })
 
