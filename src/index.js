@@ -103,7 +103,7 @@ app.use(async function responseTime(ctx, next) {
 
 //For cors with options
 app.use(cors({
-  origin: process.env.REQUEST_HOST
+  origins: [`${process.env.REQUEST_HOST}`, `${process.env.DEFAULTSEO_HOST}`]
 }))
 
 //For useragent detection
