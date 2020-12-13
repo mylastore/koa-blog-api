@@ -130,7 +130,7 @@ module.exports = {
         {
             _id: user1,
             email: 'me@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'admin',
             about: 'about me...',
@@ -147,7 +147,7 @@ module.exports = {
         {
             _id: user2,
             email: 'me2@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -160,7 +160,7 @@ module.exports = {
         {
             _id: user3,
             email: 'me3@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -173,7 +173,7 @@ module.exports = {
         {
             _id: user4,
             email: 'me4@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -186,7 +186,7 @@ module.exports = {
         {
             _id: user5,
             email: 'me5@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -199,7 +199,7 @@ module.exports = {
         {
             _id: user6,
             email: 'me6@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -212,7 +212,7 @@ module.exports = {
         {
             _id: user7,
             email: 'me7@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -225,7 +225,7 @@ module.exports = {
         {
             _id: user8,
             email: 'me8@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -238,7 +238,7 @@ module.exports = {
         {
             _id: user9,
             email: 'me9@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -251,7 +251,7 @@ module.exports = {
         {
             _id: user10,
             email: 'me10@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -264,7 +264,7 @@ module.exports = {
         {
             _id: user11,
             email: 'me11@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -277,7 +277,7 @@ module.exports = {
         {
             _id: user12,
             email: 'me12@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -290,7 +290,7 @@ module.exports = {
         {
             _id: user13,
             email: 'me13@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -303,7 +303,7 @@ module.exports = {
         {
             _id: user14,
             email: 'me14@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -316,7 +316,7 @@ module.exports = {
         {
             _id: user15,
             email: 'me15@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -329,7 +329,7 @@ module.exports = {
         {
             _id: user16,
             email: 'me16@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -342,7 +342,7 @@ module.exports = {
         {
             _id: user17,
             email: 'me17@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -355,7 +355,7 @@ module.exports = {
         {
             _id: user18,
             email: 'me18@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -368,7 +368,7 @@ module.exports = {
         {
             _id: user19,
             email: 'me19@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
@@ -381,7 +381,7 @@ module.exports = {
         {
             _id: user20,
             email: 'me20@me.com',
-            avatar: `https://picsum.photos/200?random=${randomNumber()}`,
+            avatar: 'https://picsum.photos/id/237/200',
             password: 'Password#1',
             role: 'user',
             name: 'David',
