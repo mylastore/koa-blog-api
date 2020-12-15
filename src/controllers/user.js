@@ -241,13 +241,18 @@ class UserController {
   async deleteUser(ctx) {
     try {
       const userId = ctx.request.body._id
-      const deleteUser = await User.deleteOne({_id: userId})
-      if (!deleteUser) {
-        ctx.throw(422, 'Oops something went wrong, please try again.')
+      const countBlogs = await Blog.countDocuments({postedBy: userId})
+      if(countBlogs > 0){
+        return ctx.body = {status: 422, message: 'Before deleting your account you must delete all of yours blogs.'}
+      } else {
+        const deleteUser = await User.deleteOne({_id: userId})
+        if (!deleteUser) {
+          ctx.throw(422, 'Oops something went wrong, please try again.')
+        }
+        ctx.state.user = null
+        ctx.cookies.set('token', null)
+        ctx.body = {status: 200, message: 'Success!'}
       }
-      ctx.state.user = null
-      ctx.cookies.set('token', null)
-      ctx.body = 'Success!'
     } catch (err) {
       ctx.throw(422, err)
     }
