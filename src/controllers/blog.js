@@ -6,7 +6,6 @@ import stripHtml from 'string-strip-html'
 import mongoError from '../middleware/mongoErrors'
 import {isObjectEmpty} from '../middleware/utils'
 import rmdir from "../middleware/removeDirectory"
-import uploadImages from '../middleware/editorImageUpload'
 
 class BlogController {
   constructor() {
@@ -162,7 +161,7 @@ class BlogController {
       .populate('categories', '_id name slug')
       .populate('tags', '_id name slug')
       .populate('postedBy', '_id name username')
-      .select('_id title slug tags, postedBy, createdAt, updatedAt')
+      .select('_id title slug visited tags, postedBy, createdAt')
       .exec()
       .then(data => {
         ctx.body = data
@@ -187,7 +186,7 @@ class BlogController {
       .sort({createdAt: -1})
       .skip(skip)
       .limit(limit)
-      .select('_id title avatar slug excerpt categories tags postedBy createdAt updatedAt')
+      .select('_id title avatar slug visited excerpt categories tags postedBy createdAt')
       .exec()
       .then((blog) => {
         blogs = blog
@@ -220,11 +219,12 @@ class BlogController {
   }
 
   async getBlog(ctx) {
-    await Blog.findOne({slug: ctx.params.slug})
+    await Blog.findOneAndUpdate({slug: ctx.params.slug}, {$inc: { visited: 1}}, {new: true, upsert: true})
+    //await Blog.findOne({slug: ctx.params.slug})
       .populate('categories', '_id name slug')
       .populate('tags', '_id name slug')
       .populate('postedBy', '_id name username')
-      .select('_id title avatar content slug imgID metaTitle metaDescription categories tags postedBy createdAt updatedAt')
+      .select('_id title avatar content slug imgID visited metaTitle metaDescription categories tags postedBy createdAt')
       .exec()
       .then((data) => {
         if (!data) {
@@ -235,6 +235,7 @@ class BlogController {
       .catch((err) => {
         ctx.throw(422, err)
       })
+
   }
 
   async deleteBlog(ctx, next) {

@@ -49,7 +49,7 @@ class CategoryController {
             .populate('categories', '_id name username slug')
             .populate('tags', '_id name username slug')
             .populate('postedBy', '_id name username')
-            .select('_id title slug excerpt categories tags postedBy avatar createdAt updatedAt')
+            .select('_id title slug excerpt visited categories tags postedBy avatar createdAt')
             .exec()
             .then((res) => {
                blogs = res

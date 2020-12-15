@@ -11,6 +11,10 @@ const schema = new mongoose.Schema({
     maxlength: [160, 'Title maximum number of characters is 160'],
     required: [true, 'Tile is required']
   },
+  visited:{
+    type: Number,
+    default: 0
+  },
   slug: {
     type: String,
     unique: true,
