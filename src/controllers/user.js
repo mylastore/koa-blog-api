@@ -209,7 +209,6 @@ class UserController {
       .select('username name email about website location gender avatar createdAt')
       .exec()
       .then((res) => {
-        console.log(res)
         ctx.body = res
       })
       .catch((err) => {
@@ -220,12 +219,9 @@ class UserController {
 
   async updateAccount(ctx) {
     const body = ctx.request.body
-    console.log(body)
-
     if (body.username) {
       body.username.replace(/\s/g, "")
     }
-
     try {
       let user = await User.findOneAndUpdate({username: ctx.params.username}, body, {
         new: true,
@@ -235,9 +231,8 @@ class UserController {
       if (!user) {
         ctx.throw(404, 'User not found')
       }
-      ctx.body = user
+      ctx.body = user.toAuthJSON()
     } catch (err) {
-      console.log(err)
       ctx.throw(422, err)
     }
   }
