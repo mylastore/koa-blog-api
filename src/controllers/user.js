@@ -223,9 +223,8 @@ class UserController {
 
   async getProfile(ctx) {
     const username = ctx.params.username
-
-    await User.findOne({username})
-      .select('username name email location website about _id createdAt updatedAt')
+    await User.findOne({username: username})
+      .select('username name email about website location gender avatar createdAt')
       .exec()
       .then((res) => {
         ctx.body = res
@@ -239,20 +238,20 @@ class UserController {
   async updateAccount(ctx) {
     const body = ctx.request.body
     if (body.username) {
-      body.username = body.username.replace(/\s/g, "")
+      body.username.replace(/\s/g, "")
     }
     try {
-      let res = await User.findOneAndUpdate({username: ctx.params.username}, body, {
+      let user = await User.findOneAndUpdate({username: ctx.params.username}, body, {
         new: true,
         runValidators: true,
         context: 'query'
       })
-      if (!res) {
+      if (!user) {
         ctx.throw(404, 'User not found')
       }
-      ctx.body = res.toAuthJSON()
+      ctx.body = user.toAuthJSON()
     } catch (err) {
-      ctx.throw(422, mongoError(err))
+      ctx.throw(422, err)
     }
   }
 
@@ -416,7 +415,7 @@ class UserController {
     let blogs
 
     await User.findOne({username})
-      .select('_id username name email avatar createdAt updatedAt')
+      .select('_id username name email avatar createdAt')
       .exec()
       .then((res) => {
         user = res
@@ -426,7 +425,7 @@ class UserController {
           .populate('categories', 'name slug')
           .populate('tags', 'name slug')
           .populate('postedBy', 'id name')
-          .select('title slug excerpt categories avatar tags postedBy createdAt updatedAt')
+          .select('title slug excerpt categories avatar tags postedBy createdAt')
           .exec()
           .then((res) => {
             blogs = res
