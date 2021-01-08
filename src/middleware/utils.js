@@ -77,21 +77,21 @@ utils.sendNewUserEmail = async function(name, email) {
 }
 
 utils.sendQuoteEmail =  async function (data) {
-  let {name, email, message, phone, company} = data
+  let {name, email, message, phone, website} = data
   if (name && email && message) {
 
     const data = {
       to: appEmail,
       from: email,
       subject: `Quote request from ${appName}`,
-      text: `Email received from:  \n Name: ${name} \n Email: ${email} \n Phone ${phone} \n Company ${company} \n Message: ${message}`,
+      text: `Email received from:  \n Name: ${name} \n Email: ${email} \n Phone ${phone} \n Website ${website} \n Message: ${message}`,
       template_id: 'd-0b3e1c50e75d40efab0963a73188f77b',
       dynamic_template_data: {
         name: name,
         email: email,
         message: message,
         phone: phone,
-        company: company,
+        website: website,
         appUrl: appUrl,
         appName: appName
       }

@@ -7,46 +7,52 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    minlength: [2, 'Username must be at least 2 characters'],
-    maxlength: [32, "Username can't be longer then 32 characters"],
+    minlength: [2, 'Username minimum length is 2 characters'],
+    maxlength: [32, "Username maximum length is 32 characters"],
     unique: true,
     index: true
   },
   name: {
     type: String,
     trim: true,
-    minlength: [2, 'Name must be at least 2 characters'],
-    maxlength: [32, 'Name can not be longer then 32 characters']
+    minlength: [2, 'Name minimum length is 2 characters'],
+    maxlength: [32, 'Name maximum length is 32 characters']
   },
   email: {
     type: String,
     trim: true,
     unique: true,
     lowercase: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email is not valid.'],
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email is not valid'],
     immutable: true
   },
   role: {type: String, default: 'user', immutable: true},
   password: {
     type: String,
-    match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(.{8,50})$/, 'Password must be at least 6 characters and must contain 1 uppercase and 1 symbol.'],
+    match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(.{8,50})$/, 'Password must be at least 6 characters and must contain 1 uppercase and 1 symbol'],
   },
   passwordResetToken: String,
   emailVerified: {type: Boolean, default: false},
   google: String,
   gender: {type: String, default: ''},
-  location: {type: String, default: ''},
+  location: {
+    type: String,
+    default: '',
+    minlength: [2, 'Location minimum length is 2 characters'],
+    maxlength: [60, 'Location maximum length is 60 characters']
+  },
   about: {
     type: String,
     default: '',
-    maxlength: [500, "About can't be more then 500 characters."]
+    minlength: [2, 'About minimum length is 2 characters'],
+    maxlength: [1000, 'Location maximum length is 1000 characters']
   },
   website: {
     type: String,
     default: '',
     match: [
-      /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
-      , "Website url format is incorrect."
+      /^(?:[a-zA-Z0-9]+(?:\-*[a-zA-Z0-9])*\.)+[a-zA-Z0-9]{2,63}$/
+      , "Website url is not valid"
     ]
   },
   avatar: {type: String, default: 'avatar.jpg'},

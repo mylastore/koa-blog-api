@@ -1,6 +1,7 @@
 import Quote from '../models/Quote'
 import utils from '../middleware/utils'
-import mongoError from "../middleware/mongoErrors";
+import mongoError from "../middleware/mongoErrors"
+import {validateEmail, validateRequired} from "../middleware/validate"
 
 class QuoteController {
 
@@ -30,10 +31,8 @@ class QuoteController {
   async getQuote(ctx) {
     const quoteId = ctx.params.id
     if (!quoteId) return ctx.throw(422, 'Invalid data received!')
-
     try {
-      const quote = await Quote.findById(quoteId)
-      ctx.body = quote
+      ctx.body = await Quote.findById(quoteId)
     } catch (error) {
       if (error.kind === "ObjectId") return ctx.throw(422, 'Invalid Quote ID')
       ctx.throw(422, error)
@@ -53,12 +52,11 @@ class QuoteController {
     try {
       const quote = await new Quote(data).save()
       if (!quote) {
-        ctx.throw(422, 'Could not save quote')
+        console.log('Could not save quote')
       }
       await utils.sendQuoteEmail(data).then(res => {
-        ctx.body = {status: 200, message: 'Quote was sent.'}
+        ctx.body = {status: 200, message: 'Form was sent.'}
       })
-
     } catch (err) {
       ctx.throw(422, mongoError(err))
     }
@@ -67,11 +65,22 @@ class QuoteController {
 
   async contactAuthor(ctx) {
     const data = ctx.request.body
+    const emailValid = validateEmail(data.email)
+    const authorEmailValid = validateEmail(data.authorEmail)
+
+    if(!emailValid || !authorEmailValid){
+      ctx.throw(422, "Invalid email format")
+    }
+    const validName = validateRequired(data.name)
+    const validMessage = validateRequired(data.message)
+    if(!validName || !validMessage){
+      ctx.throw(422, 'Missing required data')
+    }
     await utils.sendAuthorEmail(data).then(() => {
       ctx.body = {status: 200, message: 'Email was sent.'}
     })
-
   }
+
 }
 
 export default QuoteController

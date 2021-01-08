@@ -57,7 +57,8 @@ const schema = new mongoose.Schema({
     type: ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  published: {type: Boolean, default: false}
 
 }, {timestamps: true})
 
