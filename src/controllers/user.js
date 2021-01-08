@@ -7,6 +7,7 @@ import shortId from 'shortid'
 import mongoError from '../middleware/mongoErrors'
 import jwt from 'jsonwebtoken'
 import {OAuth2Client} from "google-auth-library";
+import {validateEmail, validatePassword, validateRequired} from "../middleware/validate"
 
 const passwordResetSecrete = process.env.JWT_PASSWORD_SECRET
 const userActivationSecret = process.env.JWT_ACCOUNT_ACTIVATION
@@ -20,6 +21,14 @@ class UserController {
 
   async accountActivation(ctx) {
     const {name, email, password} = ctx.request.body
+    const emailValid = validateEmail(email)
+    const passwordValid = validatePassword(password)
+    const nameValid = validateRequired(name)
+
+    if(!emailValid || !passwordValid || !nameValid){
+      ctx.throw(422, 'Invalid data received')
+    }
+
     try {
       const user = await User.findOne({email})
       if (user) {
@@ -71,9 +80,12 @@ class UserController {
   async login(ctx) {
     const {password, email} = ctx.request.body
 
-    if (!email || !password) {
-      ctx.throw(422, 'Incomplete data received')
+    const passwordValid = validatePassword(password)
+    const emailValid = validateEmail(email)
+    if(!passwordValid || !emailValid){
+      ctx.throw(422, 'Invalid data received')
     }
+
     try {
       let user = await User.findOne({email: email})
       if (!user) {
@@ -83,7 +95,7 @@ class UserController {
         ctx.throw(422, {message: 'Password is invalid'})
       }
       const authUser = user.toAuthJSON()
-      ctx.cookies.set('token', authUser.token, {expiresIn: sessionExpiration, sameSite: 'strict'})
+      ctx.cookies.set('token', authUser.token, {expiresIn: sessionExpiration, sameSite: 'lax', httpOnly: true})
       return ctx.body = authUser
 
     } catch (error) {
@@ -132,22 +144,23 @@ class UserController {
   }
 
   async forgot(ctx) {
-    const email = ctx.request.body
-    if (!email) {
-      ctx.throw(422, 'Incomplete data received')
-    }
-
-    const token = jwt.sign({}, passwordResetSecrete, {expiresIn: '30m'})
-    let resetData = {
-      passwordResetToken: token,
+    const data = ctx.request.body
+    const emailValid = validateEmail(data.email)
+    if(!emailValid || !data.email){
+      ctx.throw(422, "Email format is invalid")
     }
 
     try {
-      const user = await User.findOneAndUpdate(email, resetData)
+      const token = jwt.sign({}, passwordResetSecrete, {expiresIn: '30m'})
+      let resetData = {
+        passwordResetToken: token,
+      }
+      const user = await User.findOneAndUpdate({email: data.email}, resetData, {returnOriginal: false})
       if (!user) {
         ctx.throw(422, 'Email not found.')
       }
-      await utils.sendForgotPassword(email, token)
+
+    await utils.sendForgotPassword(user.email, token)
       ctx.body = {status: 200, message: `Email sent to ${user.email}`}
     } catch (err) {
       ctx.throw(422, err)
@@ -156,9 +169,14 @@ class UserController {
 
   async resetPassword(ctx) {
     const {passwordResetToken, password} = ctx.request.body
+    const passwordValid = validatePassword(password)
+    if(!passwordValid){
+      ctx.throw(422, 'Password minimum length 8, must have 1 capital letter, 1 number and 1 special character.')
+    }
+
     await jwt.verify(passwordResetToken, passwordResetSecrete, async function (err, decoded) {
       if (err) {
-        ctx.throw(401, 'Expired link, Try again.')
+        ctx.throw(401, 'Expired link, Try resetting the password again.')
       }
       try {
         let user = await User.findOne({
@@ -189,7 +207,7 @@ class UserController {
         user.password = password
         const res = await user.save()
         if (!res) {
-          ctx.throw(404, 'User not found.')
+          ctx.throw(422, 'Oops something went wrong, please try again.')
         }
         ctx.body = {status: 200, message: 'Password was updated.'}
       }
@@ -242,7 +260,7 @@ class UserController {
       const userId = ctx.request.body._id
       const countBlogs = await Blog.countDocuments({postedBy: userId})
       if(countBlogs > 0){
-        return ctx.body = {status: 422, message: 'Before deleting your account you must delete all of yours blogs.'}
+        return ctx.body = {status: 422, message: 'Before deleting your account you must delete all yours blogs.'}
       } else {
         const deleteUser = await User.deleteOne({_id: userId})
         if (!deleteUser) {

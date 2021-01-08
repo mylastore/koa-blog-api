@@ -30,7 +30,7 @@ router.post('/api/user/reset-password', async (ctx, next) => {
   await userController.resetPassword(ctx)
 })
 
-router.post('/api/user/update-password', async (ctx, next) => {
+router.post('/api/user/update-password', auth.isUser, async (ctx, next) => {
   await userController.updatePassword(ctx)
 })
 
