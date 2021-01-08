@@ -176,7 +176,7 @@ class UserController {
 
     await jwt.verify(passwordResetToken, passwordResetSecrete, async function (err, decoded) {
       if (err) {
-        ctx.throw(401, 'Expired link, Try resetting the password again.')
+        ctx.throw(401, 'Expired or invalid link! Please try to resetting your password again')
       }
       try {
         let user = await User.findOne({
