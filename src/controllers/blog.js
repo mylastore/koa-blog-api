@@ -33,7 +33,7 @@ class BlogController {
   }
 
   async createBlog(ctx) {
-    let {title, content, categories, tags} = ctx.request.body
+    let {title, content, categories, tags, published} = ctx.request.body
     let slug
     let metaDescription
     let excerpt
@@ -43,13 +43,6 @@ class BlogController {
     if (!isObjectEmpty(ctx.request.files)) {
       imageURl = ctx.request.files.avatar.path.avatarUrl
       imgID = ctx.request.files.avatar.path.imgID
-    }
-
-    if (categories) {
-      categories = categories.trim().split(/\s*,\s*/)
-    }
-    if (tags) {
-      tags = tags.trim().split(/\s*,\s*/)
     }
 
     if (!categories || categories.length === 0) {
@@ -75,6 +68,7 @@ class BlogController {
       metaDescription: metaDescription,
       categories: categories,
       tags: tags,
+      published: published,
       excerpt: excerpt,
       avatar: imageURl,
       imgID: imgID,
