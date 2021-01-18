@@ -64,7 +64,7 @@ class SeedData {
     }
 
     async seedDb() {
-        // remove all uploaded images
+        // remove all uploaded images 'upload' directory
         await rmdir('upload', { removeContentOnly: true })
         await this.cleanDb()
         await this.pushDataToDb()

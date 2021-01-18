@@ -33,7 +33,7 @@ class BlogController {
   }
 
   async createBlog(ctx) {
-    let {title, content, categories, tags} = ctx.request.body
+    let {title, content, published, categories, tags} = ctx.request.body
     let slug
     let metaDescription
     let excerpt
@@ -69,6 +69,7 @@ class BlogController {
 
     const blog = new Blog({
       title: title,
+      published: published,
       content: content,
       slug: slug,
       metaTitle: `${title} | ${process.env.APP_NAME}`,
@@ -97,6 +98,9 @@ class BlogController {
   async updateBlog(ctx, next) {
     const data = ctx.request.body
     const slug = ctx.params.slug
+
+    data.published = ctx.request.body.published
+    console.log(ctx.request.body)
 
     if (data.title) {
       data.metaTitle = `${data.title} | ${process.env.APP_NAME}`
@@ -220,11 +224,10 @@ class BlogController {
 
   async getBlog(ctx) {
     await Blog.findOneAndUpdate({slug: ctx.params.slug}, {$inc: { visited: 1}}, {new: true, upsert: true})
-    //await Blog.findOne({slug: ctx.params.slug})
       .populate('categories', '_id name slug')
       .populate('tags', '_id name slug')
       .populate('postedBy', '_id name username')
-      .select('_id title avatar content slug imgID visited metaTitle metaDescription categories tags postedBy createdAt')
+      .select('_id title published avatar content slug imgID visited metaTitle metaDescription categories tags postedBy createdAt')
       .exec()
       .then((data) => {
         if (!data) {

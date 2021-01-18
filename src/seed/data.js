@@ -27,6 +27,8 @@ const blog2 = mongoose.Types.ObjectId()
 const blog3 = mongoose.Types.ObjectId()
 const blog4 = mongoose.Types.ObjectId()
 const blog5 = mongoose.Types.ObjectId()
+const blog6 = mongoose.Types.ObjectId()
+const blog7 = mongoose.Types.ObjectId()
 
 const category1 = mongoose.Types.ObjectId()
 const category2 = mongoose.Types.ObjectId()
@@ -70,6 +72,7 @@ module.exports = {
             excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
+            published: true,
             categories: [category1],
             tags: [tag1]
         },
@@ -82,7 +85,8 @@ module.exports = {
             metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
             excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
-            postedBy: user1,
+            postedBy: user2,
+            published: true,
             categories: [category2],
             tags: [tag2]
         },
@@ -96,6 +100,7 @@ module.exports = {
             excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
+            published: true,
             categories: [category3],
             tags: [tag3]
         },
@@ -108,8 +113,9 @@ module.exports = {
             metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
             excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
-            postedBy: user1,
+            postedBy: user2,
             categories: [category4],
+            published: true,
             tags: [tag4]
         },
         {
@@ -122,6 +128,35 @@ module.exports = {
             excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
+            published: true,
+            categories: [category5],
+            tags: [tag5]
+        },
+        {
+            _id: blog6,
+            title: 'The database for modern applications',
+            slug: 'the-database-for-modern-applications',
+            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            metaTile: 'The database for modern applications',
+            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            avatar: 'seo-default.webp',
+            postedBy: user3,
+            published: false,
+            categories: [category5],
+            tags: [tag5]
+        },
+        {
+            _id: blog7,
+            title: 'Unpublished blog',
+            slug: 'unpublished-blog',
+            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            metaTile: 'The database for modern applications',
+            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            avatar: 'seo-default.webp',
+            postedBy: user1,
+            published: false,
             categories: [category5],
             tags: [tag5]
         }
