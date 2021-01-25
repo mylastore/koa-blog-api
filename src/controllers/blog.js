@@ -100,7 +100,6 @@ class BlogController {
     const slug = ctx.params.slug
 
     data.published = ctx.request.body.published
-    console.log(ctx.request.body)
 
     if (data.title) {
       data.metaTitle = `${data.title} | ${process.env.APP_NAME}`
@@ -160,12 +159,12 @@ class BlogController {
     }
   }
 
-  async getBlogs(ctx) {
+  async getAllUserBlogs(ctx) {
     await Blog.find({postedBy: ctx.params.id})
       .populate('categories', '_id name slug')
       .populate('tags', '_id name slug')
       .populate('postedBy', '_id name username')
-      .select('_id title slug visited tags, postedBy, createdAt')
+      .select('_id title slug visited tags postedBy published createdAt')
       .exec()
       .then(data => {
         ctx.body = data
@@ -175,7 +174,7 @@ class BlogController {
       })
   }
 
-  async getAll(ctx) {
+  async getAllPublishedBlogs(ctx) {
     let blogs
     let categories
     let tags
@@ -183,7 +182,7 @@ class BlogController {
     let limit = body.limit ? parseInt(body.limit) : 10
     let skip = body.skip ? parseInt(body.skip) : 0
 
-    await Blog.find({})
+    await Blog.find({published: true})
       .populate('categories', '_id name slug')
       .populate('tags', '_id name slug')
       .populate('postedBy', '_id name username')
@@ -208,7 +207,7 @@ class BlogController {
                 tags = tag
               }))
               .then(async () => {
-                await Blog.countDocuments({})
+                await Blog.countDocuments({published: true})
                   .exec()
                   .then((c => {
                     const total = c

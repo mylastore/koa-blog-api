@@ -16,7 +16,7 @@ router.post('/api/blog', auth.isUser, uploadImg,  async(ctx) => {
 })
 
 router.get('/api/blog/:id', auth.isUser,async(ctx) => {
-  await controller.getBlogs(ctx)
+  await controller.getAllUserBlogs(ctx)
 })
 
 router.get('/api/getblog/:slug', async(ctx) => {
@@ -36,7 +36,7 @@ router.post('/api/blog/related', async (ctx) => {
 })
 
 router.post('/api/blogs', async(ctx) => {
-  await controller.getAll(ctx)
+  await controller.getAllPublishedBlogs(ctx)
 })
 
 router.get('/api/blogs/search', async (ctx) => {
