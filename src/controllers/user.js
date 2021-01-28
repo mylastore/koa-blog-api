@@ -418,6 +418,9 @@ class UserController {
       .select('_id username name email avatar createdAt')
       .exec()
       .then((res) => {
+        if(!res){
+          ctx.throw(422, "Oops! something is wrong. Try later.")
+        }
         user = res
       })
       .then(async () => {
@@ -435,8 +438,6 @@ class UserController {
       .catch((err) => {
         ctx.throw(422, err)
       })
-
-
   }
 
 }
