@@ -20,6 +20,7 @@ import categoryRouter from './routes/category'
 import tagRouter from './routes/tag'
 import blogRouter from './routes/blog'
 import authRouter from "./routes/auth"
+import instaRouter from "./routes/instagram"
 
 const mongoDB = process.env.DB_URI
 
@@ -154,5 +155,7 @@ app.use(blogRouter.routes())
 app.use(blogRouter.allowedMethods())
 app.use(authRouter.routes())
 app.use(authRouter.allowedMethods())
+app.use(instaRouter.routes())
+app.use(instaRouter.allowedMethods())
 
 export default app

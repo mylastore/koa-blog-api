@@ -37,14 +37,14 @@ const userSchema = new mongoose.Schema({
   gender: {type: String, default: ''},
   location: {
     type: String,
+    required: false,
     default: '',
-    minlength: [2, 'Location minimum length is 2 characters'],
     maxlength: [60, 'Location maximum length is 60 characters']
   },
   about: {
     type: String,
+    required: false,
     default: '',
-    minlength: [2, 'About minimum length is 2 characters'],
     maxlength: [1000, 'Location maximum length is 1000 characters']
   },
   website: {
