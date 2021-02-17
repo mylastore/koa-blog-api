@@ -2,3 +2,7 @@ node_modules
 .idea
 .env
 env.env
+
+# misc
+.DS_Store
+*.pem

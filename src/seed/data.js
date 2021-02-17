@@ -36,13 +36,11 @@ const category3 = mongoose.Types.ObjectId()
 const category4 = mongoose.Types.ObjectId()
 const category5 = mongoose.Types.ObjectId()
 
-
 const tag1 = mongoose.Types.ObjectId()
 const tag2 = mongoose.Types.ObjectId()
 const tag3 = mongoose.Types.ObjectId()
 const tag4 = mongoose.Types.ObjectId()
 const tag5 = mongoose.Types.ObjectId()
-
 
 const quote1 = mongoose.Types.ObjectId()
 const quote2 = mongoose.Types.ObjectId()
@@ -50,11 +48,10 @@ const quote3 = mongoose.Types.ObjectId()
 const quote4 = mongoose.Types.ObjectId()
 const quote5 = mongoose.Types.ObjectId()
 
-
 /**
  * Random number generator fuction
  * @returns {number}
- * 
+ *
  */
 function randomNumber() {
     return Math.floor(Math.random() * 100 + 1)
@@ -66,100 +63,121 @@ module.exports = {
             _id: blog1,
             title: 'The database for modern applications',
             slug: 'the-database-for-modern-applications',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
             published: true,
             categories: [category1],
-            tags: [tag1]
+            tags: [tag1],
         },
         {
             _id: blog2,
             title: 'The database for modern',
             slug: 'the-database-for-modern',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user2,
             published: true,
             categories: [category2],
-            tags: [tag2]
+            tags: [tag2],
         },
         {
             _id: blog3,
             title: 'The database for modern',
             slug: 'the-database-for-modern-face',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
             published: true,
             categories: [category3],
-            tags: [tag3]
+            tags: [tag3],
         },
         {
             _id: blog4,
             title: 'The database for modern applications for life',
             slug: 'the-database-for-modern-applications-life',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user2,
             categories: [category4],
             published: true,
-            tags: [tag4]
+            tags: [tag4],
         },
         {
             _id: blog5,
             title: 'The database for modern applications cypress',
             slug: 'the-database-for-modern-applications-cypress',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
             published: true,
             categories: [category5],
-            tags: [tag5]
+            tags: [tag5],
         },
         {
             _id: blog6,
             title: 'The database for modern applications',
             slug: 'the-database-for-modern-applications',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user3,
             published: false,
             categories: [category5],
-            tags: [tag5]
+            tags: [tag5],
         },
         {
             _id: blog7,
             title: 'Unpublished blog',
             slug: 'unpublished-blog',
-            content: 'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
+            content:
+                'MongoDB is a document database, which means it stores data in JSON-like documents. We believe this is the most natural way to think about data, and is much more expressive and powerful than the traditional row/column model. ',
             metaTile: 'The database for modern applications',
-            metaDescription: 'MongoDB is a document database, which means it stores data in JSON-like...',
-            excerpt: 'MongoDB is a document database, which means it stores data in JSON-like documents...',
+            metaDescription:
+                'MongoDB is a document database, which means it stores data in JSON-like...',
+            excerpt:
+                'MongoDB is a document database, which means it stores data in JSON-like documents...',
             avatar: 'seo-default.webp',
             postedBy: user1,
             published: false,
             categories: [category5],
-            tags: [tag5]
-        }
+            tags: [tag5],
+        },
     ],
     users: [
         {
@@ -203,7 +221,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user4,
@@ -216,7 +234,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user5,
@@ -229,7 +247,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user6,
@@ -242,7 +260,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user7,
@@ -255,7 +273,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user8,
@@ -268,7 +286,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user9,
@@ -281,7 +299,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user10,
@@ -294,7 +312,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user11,
@@ -307,7 +325,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user12,
@@ -320,7 +338,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user13,
@@ -333,7 +351,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user14,
@@ -346,7 +364,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user15,
@@ -359,7 +377,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user16,
@@ -372,7 +390,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user17,
@@ -385,7 +403,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user18,
@@ -398,7 +416,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user19,
@@ -411,7 +429,7 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
         {
             _id: user20,
@@ -424,62 +442,62 @@ module.exports = {
             username: shortId.generate(),
             location: 'Santa Ana, CA',
             gender: 'Male',
-            website: ''
+            website: '',
         },
     ],
     categories: [
         {
-          _id: category1,
-          name: 'NextJS',
-          slug: 'nextjs'
+            _id: category1,
+            name: 'NextJS',
+            slug: 'nextjs',
         },
         {
             _id: category2,
             name: 'NodeJS',
-            slug: 'nodejs'
+            slug: 'nodejs',
         },
         {
             _id: category3,
             name: 'SvelteJS',
-            slug: 'sveltejs'
+            slug: 'sveltejs',
         },
         {
             _id: category4,
             name: 'MongoDB',
-            slug: 'mongodb'
+            slug: 'mongodb',
         },
         {
             _id: category5,
             name: 'ReactJs',
-            slug: 'reactjs'
-        }
+            slug: 'reactjs',
+        },
     ],
     tags: [
         {
             _id: tag1,
             name: 'CSS',
-            slug: 'css'
+            slug: 'css',
         },
         {
             _id: tag2,
             name: 'SASS',
-            slug: 'sass'
+            slug: 'sass',
         },
         {
             _id: tag3,
             name: 'oAuth',
-            slug: 'oauth'
+            slug: 'oauth',
         },
         {
             _id: tag4,
             name: 'npm',
-            slug: 'npm'
+            slug: 'npm',
         },
         {
             _id: tag5,
             name: 'git',
-            slug: 'git'
-        }
+            slug: 'git',
+        },
     ],
     quotes: [
         {
@@ -526,6 +544,6 @@ module.exports = {
             website: 'mysite.com',
             message:
                 'Some description of this event. I dont know what to talk about',
-        }
+        },
     ],
 }

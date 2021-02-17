@@ -9,19 +9,19 @@ const controller = new CategoryController()
 const router = new Router()
 
 router.post('/api/category', auth.isUser, async (ctx, next) => {
-  await controller.createCategory(ctx)
+    await controller.createCategory(ctx)
 })
 
 router.get('/api/category', async (ctx, next) => {
-  await controller.getCategories(ctx)
+    await controller.getCategories(ctx)
 })
 
-router.get('/api/category/:slug',async (ctx, next) => {
-  await controller.getCategory(ctx)
+router.get('/api/category/:slug', async (ctx, next) => {
+    await controller.getCategory(ctx)
 })
 
-router.delete('/api/category/:slug', auth.isAdmin, async (ctx, next ) => {
-  await controller.deleteCategory(ctx)
+router.delete('/api/category/:slug', auth.isAdmin, async (ctx, next) => {
+    await controller.deleteCategory(ctx)
 })
 
 export default router

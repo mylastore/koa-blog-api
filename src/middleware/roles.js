@@ -1,9 +1,5 @@
 module.exports = {
-    user: [
-        '/api/user',
-        '/api/user/account',
-        '/api/user/delete'
-    ],
+    user: ['/api/user', '/api/user/account', '/api/user/delete'],
     admin: [
         '/api/admin',
         '/api/user',
@@ -13,6 +9,6 @@ module.exports = {
         '/api/quotes',
         '/api/upload',
         '/api/listing',
-        '/api/category'
+        '/api/category',
     ],
 }

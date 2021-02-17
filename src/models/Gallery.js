@@ -8,9 +8,9 @@ const gallerySchema = new Schema(
         listingId: {
             type: Schema.Types.ObjectId,
             ref: 'Listing',
-        }
+        },
     },
-  { timestamps: true }
+    { timestamps: true }
 )
 
 export default mongoose.model('Gallery', gallerySchema)

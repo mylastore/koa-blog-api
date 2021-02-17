@@ -1,15 +1,15 @@
 'use strict'
 
-import rmdir from "../middleware/removeDirectory"
+import rmdir from '../middleware/removeDirectory'
 
 require('dotenv').config()
 
 import mongoose from 'mongoose'
 import Quote from '../models/Quote'
 import User from '../models/User'
-import Category from "../models/Category"
-import Tag from "../models/Tag"
-import Blog from "../models/Blog"
+import Category from '../models/Category'
+import Tag from '../models/Tag'
+import Blog from '../models/Blog'
 import data from '../seed/data'
 
 /**
@@ -73,11 +73,14 @@ class SeedData {
 
 const dbUri = process.env.DB_URI
 mongoose
-    .connect(dbUri, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    .connect(
+        dbUri,
+        {
+            useCreateIndex: true,
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    )
     .then(async () => {
         const db = new SeedData()
         await db.seedDb()
