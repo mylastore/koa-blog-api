@@ -160,6 +160,8 @@ class UserController {
         const authUser = await user.toAuthJSON()
         await ctx.cookies.set('token', authUser.token, {
           expiresIn: sessionExpiration,
+          sameSite: 'lax',
+          httpOnly: true
         })
         return ctx.body = authUser
       } else {
