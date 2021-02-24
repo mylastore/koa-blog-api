@@ -28,11 +28,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var API_URL = "https://graph.instagram.com/me/media?fields=";
-var API_FIELDS = "caption,media_url,media_type,permalink,timestamp,username";
+var API_URL = 'https://graph.instagram.com/me/media?fields=';
+var API_FIELDS = 'caption,media_url,media_type,permalink,timestamp,username';
 
-var authURl = "https://api.instagram.com/oauth/authorize?";
-var accessTokenURl = "https://api.instagram.com/oauth/access_token";
+var authURl = 'https://api.instagram.com/oauth/authorize?';
+var accessTokenURl = 'https://api.instagram.com/oauth/access_token';
 
 var redirectUri = 'http://localhost:4002/processAuthorization';
 
@@ -40,8 +40,8 @@ var appID = process.env.MY_LA_STORE_INSTAGRAM_APP_ID;
 var redirectURI = process.env.MY_LA_STORE_INSTAGRAM_APP_REDIRECT_URI;
 var appSecret = process.env.MY_LA_STORE_INSTAGRAM_APP_SECRET;
 
-var instagramGraphApiUrl = "https://graph.instagram.com/";
-var queryUrl = "me/media?fields=id,username,timestamp,caption,media_url,media_type,permalink&access_token={userToken}";
+var instagramGraphApiUrl = 'https://graph.instagram.com/';
+var queryUrl = 'me/media?fields=id,username,timestamp,caption,media_url,media_type,permalink&access_token={userToken}';
 
 var InstagramController = function () {
     function InstagramController() {
@@ -60,8 +60,8 @@ var InstagramController = function () {
                                 params = {
                                     client_id: appID,
                                     redirect_uri: redirectURI,
-                                    scope: "user_profile,user_media",
-                                    response_type: "code"
+                                    scope: 'user_profile,user_media',
+                                    response_type: 'code'
                                 };
                                 redirectURl = authURl + _querystring2.default.stringify(params);
 
@@ -149,7 +149,6 @@ exports.deleteToken = function (req, res) {
         if (err) {
             return console.log(err);
         } else {
-
             req.flash('success', { msg: 'Token deleted' });
             return res.redirect('/admin/instagram');
         }

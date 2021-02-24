@@ -101,7 +101,10 @@ var UserController = function () {
                 return _utils2.default.accountActivationEmail(ctx, email, token);
 
               case 15:
-                return _context.abrupt('return', ctx.body = { status: 200, message: 'An email has been sent to ' + email + '. Please validate to activate account.' });
+                return _context.abrupt('return', ctx.body = {
+                  status: 200,
+                  message: 'An email has been sent to ' + email + '. Please validate to activate account.'
+                });
 
               case 18:
                 _context.prev = 18;
@@ -142,12 +145,22 @@ var UserController = function () {
                         switch (_context2.prev = _context2.next) {
                           case 0:
                             if (err) {
-                              ctx.throw(401, { message: "Link is expired. Please signup again." });
+                              ctx.throw(401, {
+                                message: 'Link is expired. Please signup again.'
+                              });
                             }
                             name = decoded.name, email = decoded.email, password = decoded.password;
                             avatar = _utils2.default.gravatar(email);
                             username = _shortid2.default.generate();
-                            obj = { name: name, email: email, password: password, avatar: avatar, username: username, emailVerificationToken: undefined, emailVerified: true };
+                            obj = {
+                              name: name,
+                              email: email,
+                              password: password,
+                              avatar: avatar,
+                              username: username,
+                              emailVerificationToken: undefined,
+                              emailVerified: true
+                            };
                             user = new _User2.default(obj);
                             _context2.prev = 6;
                             _context2.next = 9;
@@ -171,7 +184,10 @@ var UserController = function () {
                             });
 
                           case 15:
-                            ctx.body = { status: 200, message: 'Account is now active. Please login.' };
+                            ctx.body = {
+                              status: 200,
+                              message: 'Account is now active. Please login.'
+                            };
 
                           case 16:
                             _context2.next = 21;
@@ -252,7 +268,11 @@ var UserController = function () {
               case 13:
                 authUser = user.toAuthJSON();
 
-                ctx.cookies.set('token', authUser.token, { expiresIn: sessionExpiration, sameSite: 'lax', httpOnly: true });
+                ctx.cookies.set('token', authUser.token, {
+                  expiresIn: sessionExpiration,
+                  sameSite: 'lax',
+                  httpOnly: true
+                });
                 return _context4.abrupt('return', ctx.body = authUser);
 
               case 18:
@@ -290,7 +310,10 @@ var UserController = function () {
                 client = new _googleAuthLibrary.OAuth2Client(googleId);
                 _context5.prev = 3;
                 _context5.next = 6;
-                return client.verifyIdToken({ idToken: idToken, audience: googleId });
+                return client.verifyIdToken({
+                  idToken: idToken,
+                  audience: googleId
+                });
 
               case 6:
                 res = _context5.sent;
@@ -320,12 +343,14 @@ var UserController = function () {
               case 16:
                 authUser = _context5.sent;
                 _context5.next = 19;
-                return ctx.cookies.set('token', authUser.token, { expiresIn: sessionExpiration });
+                return ctx.cookies.set('token', authUser.token, {
+                  expiresIn: sessionExpiration,
+                  sameSite: 'lax',
+                  httpOnly: true
+                });
 
               case 19:
-                ctx.body = authUser;
-                _context5.next = 38;
-                break;
+                return _context5.abrupt('return', ctx.body = authUser);
 
               case 22:
                 _context5.next = 24;
@@ -339,7 +364,13 @@ var UserController = function () {
               case 27:
                 username = _context5.sent;
                 password = at_hash + process.env.GOOGLE_AUTH_PASSWORD_EXT;
-                _user = new _User2.default({ name: name, email: email, username: username, password: password, avatar: avatar });
+                _user = new _User2.default({
+                  name: name,
+                  email: email,
+                  username: username,
+                  password: password,
+                  avatar: avatar
+                });
                 _context5.next = 32;
                 return _user.save();
 
@@ -351,8 +382,11 @@ var UserController = function () {
               case 35:
                 googleAuthUser = _context5.sent;
 
-
-                ctx.cookies.set('token', googleAuthUser.token, { expiresIn: sessionExpiration });
+                ctx.cookies.set('token', googleAuthUser.token, {
+                  expiresIn: sessionExpiration,
+                  sameSite: 'lax',
+                  httpOnly: true
+                });
                 ctx.body = googleAuthUser;
 
               case 38:
@@ -418,11 +452,13 @@ var UserController = function () {
                 emailValid = (0, _validate.validateEmail)(data.email);
 
                 if (!emailValid || !data.email) {
-                  ctx.throw(422, "Email format is invalid");
+                  ctx.throw(422, 'Email format is invalid');
                 }
 
                 _context7.prev = 3;
-                token = _jsonwebtoken2.default.sign({}, passwordResetSecrete, { expiresIn: '30m' });
+                token = _jsonwebtoken2.default.sign({}, passwordResetSecrete, {
+                  expiresIn: '30m'
+                });
                 resetData = {
                   passwordResetToken: token
                 };
@@ -514,7 +550,10 @@ var UserController = function () {
                             res = _context8.sent;
 
                             if (res) {
-                              ctx.body = { status: 200, message: 'Password was updated successfully.' };
+                              ctx.body = {
+                                status: 200,
+                                message: 'Password was updated successfully.'
+                              };
                             }
                             _context8.next = 17;
                             break;
@@ -681,7 +720,7 @@ var UserController = function () {
                 body = ctx.request.body;
 
                 if (body.username) {
-                  body.username.replace(/\s/g, "");
+                  body.username.replace(/\s/g, '');
                 }
                 _context13.prev = 2;
                 _context13.next = 5;
@@ -744,7 +783,10 @@ var UserController = function () {
                   break;
                 }
 
-                return _context14.abrupt('return', ctx.body = { status: 422, message: 'Before deleting your account you must delete all yours blogs.' });
+                return _context14.abrupt('return', ctx.body = {
+                  status: 422,
+                  message: 'Before deleting your account you must delete all yours blogs.'
+                });
 
               case 9:
                 _context14.next = 11;
@@ -1048,7 +1090,9 @@ var UserController = function () {
                   }
                 };
                 _context20.next = 7;
-                return _User2.default.findByIdAndUpdate({ _id: userId }, obj, { new: true });
+                return _User2.default.findByIdAndUpdate({ _id: userId }, obj, {
+                  new: true
+                });
 
               case 7:
                 user = _context20.sent;
@@ -1114,7 +1158,7 @@ var UserController = function () {
                 _context22.next = 5;
                 return _User2.default.findOne({ username: username }).select('_id username name email avatar createdAt').exec().then(function (res) {
                   if (!res) {
-                    ctx.throw(422, "Oops! something is wrong. Try later.");
+                    ctx.throw(422, 'Oops! something is wrong. Try later.');
                   }
                   user = res;
                 }).then(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {

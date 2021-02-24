@@ -2,7 +2,7 @@
 // @ts-check
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _koa = require('koa');
@@ -94,14 +94,14 @@ var mongoDB = process.env.DB_URI;
  */
 
 _mongoose2.default.connect(mongoDB, {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(function () {
-  return console.log('DB: ', mongoDB);
+    return console.log('DB: ', mongoDB);
 }).catch(function (err) {
-  return console.log(err);
+    return console.log(err);
 });
 
 //Initialize app
@@ -127,121 +127,119 @@ app.use((0, _koaHelmet2.default)());
 //     })
 // )
 
-
 //Let's log each successful interaction. We'll also log each error - but not here,
 //that's be done in the json error-handling middleware
 app.use(function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx, next) {
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return next();
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx, next) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+                switch (_context.prev = _context.next) {
+                    case 0:
+                        _context.prev = 0;
+                        _context.next = 3;
+                        return next();
 
-          case 3:
-            _logs.logger.info(ctx.method + ' ' + ctx.url + ' RESPONSE: ' + ctx.response.status);
-            _context.next = 8;
-            break;
+                    case 3:
+                        _logs.logger.info(ctx.method + ' ' + ctx.url + ' RESPONSE: ' + ctx.response.status);
+                        _context.next = 8;
+                        break;
 
-          case 6:
-            _context.prev = 6;
-            _context.t0 = _context['catch'](0);
+                    case 6:
+                        _context.prev = 6;
+                        _context.t0 = _context['catch'](0);
 
-          case 8:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, undefined, [[0, 6]]);
-  }));
+                    case 8:
+                    case 'end':
+                        return _context.stop();
+                }
+            }
+        }, _callee, undefined, [[0, 6]]);
+    }));
 
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
+    return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+    };
 }());
 
 // Apply error json handling
 var errorOptions = {
-  postFormat: function postFormat(e, obj) {
-    // Here's where we'll stick our error logger.
-    _logs.logger.info(obj);
-    if (process.env.NODE_ENV !== "production") {
-      return obj;
+    postFormat: function postFormat(e, obj) {
+        // Here's where we'll stick our error logger.
+        _logs.logger.info(obj);
+        if (process.env.NODE_ENV !== 'production') {
+            return obj;
+        }
+        delete obj.stack;
+        delete obj.name;
+        return obj;
     }
-    delete obj.stack;
-    delete obj.name;
-    return obj;
-  }
 };
 app.use((0, _koaJsonError2.default)(errorOptions));
 
 // return response time in X-Response-Time header
 app.use(function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(ctx, next) {
-    var t1, t2;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            t1 = Date.now();
-            _context2.next = 3;
-            return next();
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(ctx, next) {
+        var t1, t2;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+                switch (_context2.prev = _context2.next) {
+                    case 0:
+                        t1 = Date.now();
+                        _context2.next = 3;
+                        return next();
 
-          case 3:
-            t2 = Date.now();
+                    case 3:
+                        t2 = Date.now();
 
-            ctx.set('X-Response-Time', Math.ceil(t2 - t1) + 'ms');
+                        ctx.set('X-Response-Time', Math.ceil(t2 - t1) + 'ms');
 
-          case 5:
-          case 'end':
-            return _context2.stop();
-        }
-      }
-    }, _callee2, this);
-  }));
+                    case 5:
+                    case 'end':
+                        return _context2.stop();
+                }
+            }
+        }, _callee2, this);
+    }));
 
-  function responseTime(_x3, _x4) {
-    return _ref2.apply(this, arguments);
-  }
+    function responseTime(_x3, _x4) {
+        return _ref2.apply(this, arguments);
+    }
 
-  return responseTime;
+    return responseTime;
 }());
 
 //For cors with options
 app.use((0, _kcors2.default)({
-  origins: ['' + process.env.REQUEST_HOST, '' + process.env.DEFAULTSEO_HOST]
+    origins: ['' + process.env.REQUEST_HOST, '' + process.env.DEFAULTSEO_HOST]
 }));
 
 //For useragent detection
 app.use(_koaUseragent2.default);
 
 app.use((0, _koaBody2.default)({
-  formLimit: '1mb',
-  multipart: true, // Allow multiple files to be uploaded
-  formidable: {
-    maxFileSize: 5 * 1024 * 1024, // max size 5mb
-    keepExtensions: true, //  Extensions to save images
-    onFileBegin: function onFileBegin(name, file) {
-      var fileName = file.name;
-      var picReg = /\.(png|jpeg?g|gif|svg|webp|jpg)$/i;
-      if (!picReg.test(fileName)) {
-        new Error('File not supported');
-      }
+    formLimit: '1mb',
+    multipart: true, // Allow multiple files to be uploaded
+    formidable: {
+        maxFileSize: 5 * 1024 * 1024, // max size 5mb
+        keepExtensions: true, //  Extensions to save images
+        onFileBegin: function onFileBegin(name, file) {
+            var fileName = file.name;
+            var picReg = /\.(png|jpeg?g|gif|svg|webp|jpg)$/i;
+            if (!picReg.test(fileName)) {
+                new Error('File not supported');
+            }
+        },
+        onEnd: function onEnd(name, file) {
+            console.log('name? ', name);
+            console.log('size.size ? ', file.size);
+        }
     },
-    onEnd: function onEnd(name, file) {
-      console.log('name? ', name);
-      console.log('size.size ? ', file.size);
+    onError: function onError(err) {
+        if (err) {
+            throw err;
+        }
+        new Error('Oops! something went wrong. Try again.');
     }
-  },
-  onError: function onError(err) {
-    if (err) {
-      throw err;
-    }
-    new Error('Oops! something went wrong. Try again.');
-  }
-
 }));
 
 // Configuring Static Resource Loading Middleware

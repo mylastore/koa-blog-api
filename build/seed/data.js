@@ -53,7 +53,7 @@ var quote5 = mongoose.Types.ObjectId();
 /**
  * Random number generator fuction
  * @returns {number}
- * 
+ *
  */
 function randomNumber() {
     return Math.floor(Math.random() * 100 + 1);

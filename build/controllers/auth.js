@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11,61 +11,61 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AuthController = function () {
-  function AuthController() {
-    _classCallCheck(this, AuthController);
-  }
+    function AuthController() {
+        _classCallCheck(this, AuthController);
+    }
 
-  _createClass(AuthController, [{
-    key: "auth",
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                ctx.body = { status: 200, message: "All clear" };
+    _createClass(AuthController, [{
+        key: 'auth',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                ctx.body = { status: 200, message: 'All clear' };
 
-              case 1:
-              case "end":
-                return _context.stop();
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function auth(_x) {
+                return _ref.apply(this, arguments);
             }
-          }
-        }, _callee, this);
-      }));
 
-      function auth(_x) {
-        return _ref.apply(this, arguments);
-      }
+            return auth;
+        }()
+    }, {
+        key: 'ping',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(ctx) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                ctx.body = { status: 200, message: 'Pong' };
 
-      return auth;
-    }()
-  }, {
-    key: "ping",
-    value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(ctx) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                ctx.body = { status: 200, message: "Pong" };
+                            case 1:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
 
-              case 1:
-              case "end":
-                return _context2.stop();
+            function ping(_x2) {
+                return _ref2.apply(this, arguments);
             }
-          }
-        }, _callee2, this);
-      }));
 
-      function ping(_x2) {
-        return _ref2.apply(this, arguments);
-      }
+            return ping;
+        }()
+    }]);
 
-      return ping;
-    }()
-  }]);
-
-  return AuthController;
+    return AuthController;
 }();
 
 exports.default = AuthController;
