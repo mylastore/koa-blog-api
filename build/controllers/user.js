@@ -688,7 +688,7 @@ var UserController = function () {
               case 0:
                 username = ctx.params.username;
                 _context12.next = 3;
-                return _User2.default.findOne({ username: username }).select('username name email about website location gender avatar createdAt').exec().then(function (res) {
+                return _User2.default.findOne({ username: username }).select('username name email about website role location gender avatar createdAt').exec().then(function (res) {
                   ctx.body = res;
                 }).catch(function (err) {
                   ctx.throw(422, err);
@@ -712,7 +712,7 @@ var UserController = function () {
     key: 'updateAccount',
     value: function () {
       var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13(ctx) {
-        var body, user;
+        var body, exist, user;
         return regeneratorRuntime.wrap(function _callee13$(_context13) {
           while (1) {
             switch (_context13.prev = _context13.next) {
@@ -724,34 +724,43 @@ var UserController = function () {
                 }
                 _context13.prev = 2;
                 _context13.next = 5;
+                return _User2.default.exists({ username: body.username });
+
+              case 5:
+                exist = _context13.sent;
+
+                if (exist) {
+                  ctx.throw(422, "Username already exist, please choose another");
+                }
+                _context13.next = 9;
                 return _User2.default.findOneAndUpdate({ username: ctx.params.username }, body, {
                   new: true,
                   runValidators: true,
                   context: 'query'
                 });
 
-              case 5:
+              case 9:
                 user = _context13.sent;
 
                 if (!user) {
                   ctx.throw(404, 'User not found');
                 }
                 ctx.body = user.toAuthJSON();
-                _context13.next = 13;
+                _context13.next = 17;
                 break;
 
-              case 10:
-                _context13.prev = 10;
+              case 14:
+                _context13.prev = 14;
                 _context13.t0 = _context13['catch'](2);
 
                 ctx.throw(422, _context13.t0);
 
-              case 13:
+              case 17:
               case 'end':
                 return _context13.stop();
             }
           }
-        }, _callee13, this, [[2, 10]]);
+        }, _callee13, this, [[2, 14]]);
       }));
 
       function updateAccount(_x15) {
