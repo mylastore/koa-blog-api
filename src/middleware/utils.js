@@ -10,7 +10,6 @@ const appEmail = process.env.APP_EMAIL
 const appUrl = process.env.REQUEST_HOST
 const appName = process.env.APP_NAME
 
-
 utils.accountActivationEmail = async function(ctx, email, token) {
     const link = `${appUrl}/user/activation/${token}`
     const data = {

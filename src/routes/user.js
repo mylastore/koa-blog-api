@@ -50,7 +50,7 @@ router.patch('/api/user/account/:username', auth.isUser, async (ctx, next) => {
     await userController.updateAccount(ctx)
 })
 
-router.post('/api/user/username/:username', auth.isUser, async (ctx) => {
+router.post('/api/user/username/:username', auth.isUser, async ctx => {
     await userController.updateUserName(ctx)
 })
 

@@ -65,11 +65,9 @@ var InstagramController = function () {
                                 };
                                 redirectURl = authURl + _querystring2.default.stringify(params);
 
-                                console.log(redirectURl);
-
                                 ctx.body = { status: 200, url: redirectURl };
 
-                            case 4:
+                            case 3:
                             case 'end':
                                 return _context.stop();
                         }
@@ -93,8 +91,6 @@ var InstagramController = function () {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 code = ctx.request.body.code;
-
-                                console.log('code token? ', code);
                                 // const graphURL = "https://graph.instagram.com/refresh_access_token?"
                                 // const params = {
                                 //     grant_type: "ig_refresh_token",
@@ -104,25 +100,24 @@ var InstagramController = function () {
                                 //
                                 //
                                 // console.log(apiUrl)
-                                _context2.next = 4;
+
+                                _context2.next = 3;
                                 return (0, _nodeFetch2.default)('https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=' + code, {
                                     method: 'get',
                                     headers: { 'Content-Type': 'application/json' }
                                 });
 
-                            case 4:
+                            case 3:
                                 response = _context2.sent;
-                                _context2.next = 7;
+                                _context2.next = 6;
                                 return response.json();
 
-                            case 7:
+                            case 6:
                                 data = _context2.sent;
 
-
-                                console.log(data);
                                 ctx.body = data;
 
-                            case 10:
+                            case 8:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -189,15 +184,11 @@ exports.processAuthorization = function (req, res) {
 
 exports.getGallery = function (req, res) {
     _InstagramToken2.default.find().exec(function (err, data) {
-        console.log('data resp', data);
-
         if (data.length > 0) {
             var accessToken = data;
-
             ig.use({
                 access_token: accessToken
             });
-
             ig.user_media_recent(accessToken.split('.')[0], function (err, result, pagination, remaining, limit) {
                 if (err) {
                     res.json(err);

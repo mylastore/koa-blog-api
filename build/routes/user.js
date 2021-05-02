@@ -265,14 +265,14 @@ router.patch('/api/user/account/:username', _auth2.default.isUser, function () {
     };
 }());
 
-router.post('/api/user/delete', _auth2.default.isUser, function () {
-    var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(ctx, next) {
+router.post('/api/user/username/:username', _auth2.default.isUser, function () {
+    var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(ctx) {
         return regeneratorRuntime.wrap(function _callee12$(_context12) {
             while (1) {
                 switch (_context12.prev = _context12.next) {
                     case 0:
                         _context12.next = 2;
-                        return userController.deleteUser(ctx);
+                        return userController.updateUserName(ctx);
 
                     case 2:
                     case 'end':
@@ -282,19 +282,19 @@ router.post('/api/user/delete', _auth2.default.isUser, function () {
         }, _callee12, undefined);
     }));
 
-    return function (_x23, _x24) {
+    return function (_x23) {
         return _ref12.apply(this, arguments);
     };
 }());
 
-router.post('/api/quote', function () {
+router.post('/api/user/delete', _auth2.default.isUser, function () {
     var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13(ctx, next) {
         return regeneratorRuntime.wrap(function _callee13$(_context13) {
             while (1) {
                 switch (_context13.prev = _context13.next) {
                     case 0:
                         _context13.next = 2;
-                        return userController.createQuote(ctx);
+                        return userController.deleteUser(ctx);
 
                     case 2:
                     case 'end':
@@ -304,19 +304,19 @@ router.post('/api/quote', function () {
         }, _callee13, undefined);
     }));
 
-    return function (_x25, _x26) {
+    return function (_x24, _x25) {
         return _ref13.apply(this, arguments);
     };
 }());
 
-router.post('/api/email', function () {
+router.post('/api/quote', function () {
     var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14(ctx, next) {
         return regeneratorRuntime.wrap(function _callee14$(_context14) {
             while (1) {
                 switch (_context14.prev = _context14.next) {
                     case 0:
                         _context14.next = 2;
-                        return userController.sendEmail(ctx);
+                        return userController.createQuote(ctx);
 
                     case 2:
                     case 'end':
@@ -326,20 +326,19 @@ router.post('/api/email', function () {
         }, _callee14, undefined);
     }));
 
-    return function (_x27, _x28) {
+    return function (_x26, _x27) {
         return _ref14.apply(this, arguments);
     };
 }());
 
-// ADMIN USER ROUTES
-router.get('/api/admin/users/:page', _auth2.default.isAdmin, function () {
+router.post('/api/email', function () {
     var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15(ctx, next) {
         return regeneratorRuntime.wrap(function _callee15$(_context15) {
             while (1) {
                 switch (_context15.prev = _context15.next) {
                     case 0:
                         _context15.next = 2;
-                        return userController.adminGetUsers(ctx);
+                        return userController.sendEmail(ctx);
 
                     case 2:
                     case 'end':
@@ -349,19 +348,20 @@ router.get('/api/admin/users/:page', _auth2.default.isAdmin, function () {
         }, _callee15, undefined);
     }));
 
-    return function (_x29, _x30) {
+    return function (_x28, _x29) {
         return _ref15.apply(this, arguments);
     };
 }());
 
-router.get('/api/admin/user/:id', _auth2.default.isAdmin, function () {
+// ADMIN USER ROUTES
+router.post('/api/user/settings/:username', _auth2.default.isAdmin, function () {
     var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16(ctx, next) {
         return regeneratorRuntime.wrap(function _callee16$(_context16) {
             while (1) {
                 switch (_context16.prev = _context16.next) {
                     case 0:
                         _context16.next = 2;
-                        return userController.adminGetUser(ctx);
+                        return userController.getAdminSettings(ctx);
 
                     case 2:
                     case 'end':
@@ -371,19 +371,19 @@ router.get('/api/admin/user/:id', _auth2.default.isAdmin, function () {
         }, _callee16, undefined);
     }));
 
-    return function (_x31, _x32) {
+    return function (_x30, _x31) {
         return _ref16.apply(this, arguments);
     };
 }());
 
-router.patch('/api/admin/update-settings', _auth2.default.isAdmin, function () {
+router.get('/api/admin/users/:page', _auth2.default.isAdmin, function () {
     var _ref17 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17(ctx, next) {
         return regeneratorRuntime.wrap(function _callee17$(_context17) {
             while (1) {
                 switch (_context17.prev = _context17.next) {
                     case 0:
                         _context17.next = 2;
-                        return userController.updateSettings(ctx);
+                        return userController.adminGetUsers(ctx);
 
                     case 2:
                     case 'end':
@@ -393,19 +393,19 @@ router.patch('/api/admin/update-settings', _auth2.default.isAdmin, function () {
         }, _callee17, undefined);
     }));
 
-    return function (_x33, _x34) {
+    return function (_x32, _x33) {
         return _ref17.apply(this, arguments);
     };
 }());
 
-router.get('/api/admin/stats', _auth2.default.isAdmin, function () {
+router.get('/api/admin/user/:id', _auth2.default.isAdmin, function () {
     var _ref18 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18(ctx, next) {
         return regeneratorRuntime.wrap(function _callee18$(_context18) {
             while (1) {
                 switch (_context18.prev = _context18.next) {
                     case 0:
                         _context18.next = 2;
-                        return userController.getStats(ctx);
+                        return userController.adminGetUser(ctx);
 
                     case 2:
                     case 'end':
@@ -415,19 +415,19 @@ router.get('/api/admin/stats', _auth2.default.isAdmin, function () {
         }, _callee18, undefined);
     }));
 
-    return function (_x35, _x36) {
+    return function (_x34, _x35) {
         return _ref18.apply(this, arguments);
     };
 }());
 
-router.post('/api/user/account-activation', function () {
+router.patch('/api/admin/update-settings', _auth2.default.isAdmin, function () {
     var _ref19 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19(ctx, next) {
         return regeneratorRuntime.wrap(function _callee19$(_context19) {
             while (1) {
                 switch (_context19.prev = _context19.next) {
                     case 0:
                         _context19.next = 2;
-                        return userController.accountActivation(ctx);
+                        return userController.updateSettings(ctx);
 
                     case 2:
                     case 'end':
@@ -437,19 +437,19 @@ router.post('/api/user/account-activation', function () {
         }, _callee19, undefined);
     }));
 
-    return function (_x37, _x38) {
+    return function (_x36, _x37) {
         return _ref19.apply(this, arguments);
     };
 }());
 
-router.post('/api/user/google-login', function () {
-    var _ref20 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(ctx) {
+router.get('/api/admin/stats', _auth2.default.isAdmin, function () {
+    var _ref20 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(ctx, next) {
         return regeneratorRuntime.wrap(function _callee20$(_context20) {
             while (1) {
                 switch (_context20.prev = _context20.next) {
                     case 0:
                         _context20.next = 2;
-                        return userController.googleLogin(ctx);
+                        return userController.getStats(ctx);
 
                     case 2:
                     case 'end':
@@ -459,8 +459,52 @@ router.post('/api/user/google-login', function () {
         }, _callee20, undefined);
     }));
 
-    return function (_x39) {
+    return function (_x38, _x39) {
         return _ref20.apply(this, arguments);
+    };
+}());
+
+router.post('/api/user/account-activation', function () {
+    var _ref21 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(ctx, next) {
+        return regeneratorRuntime.wrap(function _callee21$(_context21) {
+            while (1) {
+                switch (_context21.prev = _context21.next) {
+                    case 0:
+                        _context21.next = 2;
+                        return userController.accountActivation(ctx);
+
+                    case 2:
+                    case 'end':
+                        return _context21.stop();
+                }
+            }
+        }, _callee21, undefined);
+    }));
+
+    return function (_x40, _x41) {
+        return _ref21.apply(this, arguments);
+    };
+}());
+
+router.post('/api/user/google-login', function () {
+    var _ref22 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22(ctx) {
+        return regeneratorRuntime.wrap(function _callee22$(_context22) {
+            while (1) {
+                switch (_context22.prev = _context22.next) {
+                    case 0:
+                        _context22.next = 2;
+                        return userController.googleLogin(ctx);
+
+                    case 2:
+                    case 'end':
+                        return _context22.stop();
+                }
+            }
+        }, _callee22, undefined);
+    }));
+
+    return function (_x42) {
+        return _ref22.apply(this, arguments);
     };
 }());
 

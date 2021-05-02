@@ -21,8 +21,6 @@ var appEmail = process.env.APP_EMAIL;
 var appUrl = process.env.REQUEST_HOST;
 var appName = process.env.APP_NAME;
 
-_mail2.default.setApiKey(process.env.SENDGRID_API_KEY);
-
 utils.accountActivationEmail = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx, email, token) {
         var link, data;
@@ -143,7 +141,6 @@ utils.sendQuoteEmail = function () {
                             to: appEmail,
                             from: email,
                             subject: 'Quote request from ' + appName,
-                            text: 'Email received from:  \n Name: ' + name + ' \n Email: ' + email + ' \n Phone ' + phone + ' \n Website ' + website + ' \n Message: ' + message,
                             template_id: 'd-0b3e1c50e75d40efab0963a73188f77b',
                             dynamic_template_data: {
                                 name: name,
