@@ -50,6 +50,10 @@ router.patch('/api/user/account/:username', auth.isUser, async (ctx, next) => {
     await userController.updateAccount(ctx)
 })
 
+router.post('/api/user/username/:username', auth.isUser, async (ctx) => {
+    await userController.updateUserName(ctx)
+})
+
 router.post('/api/user/delete', auth.isUser, async (ctx, next) => {
     await userController.deleteUser(ctx)
 })
@@ -63,6 +67,10 @@ router.post('/api/email', async (ctx, next) => {
 })
 
 // ADMIN USER ROUTES
+router.post('/api/user/settings/:username', auth.isAdmin, async (ctx, next) => {
+    await userController.getAdminSettings(ctx)
+})
+
 router.get('/api/admin/users/:page', auth.isAdmin, async (ctx, next) => {
     await userController.adminGetUsers(ctx)
 })

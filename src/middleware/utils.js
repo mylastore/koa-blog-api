@@ -10,7 +10,6 @@ const appEmail = process.env.APP_EMAIL
 const appUrl = process.env.REQUEST_HOST
 const appName = process.env.APP_NAME
 
-sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 utils.accountActivationEmail = async function(ctx, email, token) {
     const link = `${appUrl}/user/activation/${token}`
@@ -82,7 +81,6 @@ utils.sendQuoteEmail = async function(data) {
             to: appEmail,
             from: email,
             subject: `Quote request from ${appName}`,
-            text: `Email received from:  \n Name: ${name} \n Email: ${email} \n Phone ${phone} \n Website ${website} \n Message: ${message}`,
             template_id: 'd-0b3e1c50e75d40efab0963a73188f77b',
             dynamic_template_data: {
                 name: name,

@@ -28,14 +28,11 @@ class InstagramController {
             response_type: 'code',
         }
         const redirectURl = authURl + querystring.stringify(params)
-        console.log(redirectURl)
-
         ctx.body = { status: 200, url: redirectURl }
     }
 
     async getUserAccessToken(ctx) {
         const { code } = ctx.request.body
-        console.log('code token? ', code)
         // const graphURL = "https://graph.instagram.com/refresh_access_token?"
         // const params = {
         //     grant_type: "ig_refresh_token",
@@ -52,10 +49,7 @@ class InstagramController {
                 headers: { 'Content-Type': 'application/json' },
             }
         )
-
         const data = await response.json()
-
-        console.log(data)
         ctx.body = data
     }
 }
@@ -109,15 +103,11 @@ exports.processAuthorization = function(req, res) {
 
 exports.getGallery = function(req, res) {
     Token.find().exec(function(err, data) {
-        console.log('data resp', data)
-
         if (data.length > 0) {
             const accessToken = data
-
             ig.use({
                 access_token: accessToken,
             })
-
             ig.user_media_recent(accessToken.split('.')[0], function(
                 err,
                 result,
