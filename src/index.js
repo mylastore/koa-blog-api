@@ -108,7 +108,6 @@ app.use(
     cors({
         origins: [
             `${process.env.REQUEST_HOST}`,
-            `${process.env.DEFAULTSEO_HOST}`,
         ],
     })
 )
