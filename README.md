@@ -1,6 +1,5 @@
 <p align="center">
   <a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="KoaJS starter boilerplate with full user authentication. " data-url="https://github.com/mylastore/koa-blog-api" data-lang="en" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </p>
 
 # koa-api
