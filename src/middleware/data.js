@@ -1,6 +1,5 @@
 /*
- * Library for storing and editing local data
- *
+ * Library to create, read, update and delete data. Data is store as JSON stringify.
  */
 
 // Dependencies

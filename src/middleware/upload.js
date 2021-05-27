@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import dateFormat from './dateFormat'
 import sharp from 'sharp'
-import { isObjectEmpty } from './utils'
+import { isObjectEmpty } from './validate'
 
 const BASE_DIR = 'upload/'
 

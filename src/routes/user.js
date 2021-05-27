@@ -62,10 +62,6 @@ router.post('/api/quote', async (ctx, next) => {
     await userController.createQuote(ctx)
 })
 
-router.post('/api/email', async (ctx, next) => {
-    await userController.sendEmail(ctx)
-})
-
 // ADMIN USER ROUTES
 router.post('/api/user/settings/:username', auth.isAdmin, async (ctx, next) => {
     await userController.getAdminSettings(ctx)
