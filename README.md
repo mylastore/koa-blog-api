@@ -51,15 +51,6 @@ npm run test
 npm run seed
 ```
 
-20 plots a day on an M1 with 16GB of RAM
-``` bash
-chia plots create -k 32 -b 3400 -n 7 -r 12 -t /Volumes/extreme1/1 -d /Volumes/extreme1/1
-chia plots create -k 32 -b 3400 -n 7 -r 12 -t /Volumes/extreme2/1 -d /Volumes/extreme2/1
-
-chia plots create -k 32 -b 3400 -n 8 -r 12 -t /Volumes/extreme1/2 -d /Volumes/extreme1/2
-chia plots create -k 32 -b 3400 -n 8 -r 12 -t /Volumes/extreme2/2 -d /Volumes/extreme2/2
-```
-
 ## General Information
 
 Example data: users (with roles) and blogs.
@@ -116,8 +107,5 @@ index.js it's the brain of the app.
 Jest for testing WORK IN PROGRESS - TODO 
 
 ## License
-Private 
 
-Copyright 2021 Oscar Quinteros
-
-mrtonyq@gmail.com
+[MIT](http://opensource.org/licenses/MIT)
