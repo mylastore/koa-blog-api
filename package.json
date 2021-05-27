@@ -1,9 +1,9 @@
 {
   "name": "koa-api",
   "version": "2.0.0",
-  "description": "Back end for mylastore client",
+  "description": "An API boilerplate using Koa as the backend and Svelte as the frontend.",
   "author": "Oscar Quinteros",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "NODE_ENV=development nodemon app.js --exec",
     "test": "NODE_ENV=testing jest --forceExit",
@@ -77,6 +77,19 @@
       ]
     ]
   },
+  "keywords": [
+    "koa",
+    "koa2",
+    "api",
+    "boilerplate",
+    "svelte",
+    "spa",
+    "backend",
+    "jwt",
+    "pm2",
+    "mongodb",
+    "mongoose"
+  ],
   "jest": {
     "testEnvironment": "node"
   }

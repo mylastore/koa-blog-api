@@ -1,5 +1,14 @@
+<p align="center">
+  <a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="KoaJS starter boilerplate with full user authentication. " data-url="https://github.com/mylastore/koa-blog-api" data-lang="en" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p>
 
 # koa-api
+This is a starter boilerplate inspired by the famous [hackathon-stater](https://github.com/sahat/hackathon-starter) and [koa-vue-notes-api](https://github.com/johndatserakis/koa-vue-notes-api),  built using [Koa](http://koajs.com/) (2.5.1) as the backend and [Svelte](https://svelte.dev/) (3.17.1) as the frontend. Click [here](https://github.com/mylastore/svelte-boilerplate) to see the frontend svelte.js on github. I choose Koa and Svelte both for speed.
+
+## Example front end live app
+Click [here](https://sveltekit.mylastore.com/) to view the app live.
+
 
 ## Features
 - Koa 2.13.0
@@ -74,6 +83,11 @@ This project features an `ecosystem.json` file that is the target of the PM2 imp
 
 The `src` folder is the heart of the program.
 
+#### Note
+
+You will need to make sure you have redis running (for the rate-limiter). Or if you prefer to remove or disable, the 
+code is located in the index.js
+
 ### controllers
 
 We use controllers to keep our router thin. 
@@ -107,5 +121,6 @@ index.js it's the brain of the app.
 Jest for testing WORK IN PROGRESS - TODO 
 
 ## License
+Copyright 2021 Oscar Quinteros
 
 [MIT](http://opensource.org/licenses/MIT)
