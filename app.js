@@ -6,8 +6,8 @@ const env = 'development'
 const port = process.env.PORT
 const src = env === 'production' ? './build/index' : './src/index'
 
-require('babel-polyfill')
-if (env === 'development') { require('babel-register')}
+require('@babel/polyfill')
+if (env === 'development') { require('@babel/register')}
 
 const app = require(src).default
 

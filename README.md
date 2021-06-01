@@ -37,8 +37,11 @@ Work in progress...
 - And more...
 
 ## Installing / Getting started
-Important: copy example.env to .env and add all your credentials.
-Make sure you have redis up and running for rate limiting to work. If you prefer not to run it on development you can just uncomment redis ratelimit on the index.js file.
+Important: copy example.env to .env and add all your credentials
+
+Important: install PM2 globally on production 
+
+Make sure you have redis up and running for rate limiting to work, if you prefer not to run it on development you can just uncomment redis ratelimit on the index.js file.
 
 ``` bash
 # install dependencies
