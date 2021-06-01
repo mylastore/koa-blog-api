@@ -21,6 +21,7 @@ import tagRouter from './routes/tag'
 import blogRouter from './routes/blog'
 import authRouter from './routes/auth'
 import instaRouter from './routes/instagram'
+import bookingRouter from './routes/booking'
 
 const mongoDB = process.env.DB_URI
 
@@ -143,11 +144,11 @@ app.use(
     })
 )
 
-// Configuring Static Resource Loading Middleware
+// Static Middleware
 app.use(koaStatic('./public'))
 app.use(koaStatic('./upload'))
 
-//For router
+// Routes & Router allow methods
 app.use(userRouter.routes())
 app.use(userRouter.allowedMethods())
 app.use(quoteRouter.routes())
@@ -162,5 +163,7 @@ app.use(authRouter.routes())
 app.use(authRouter.allowedMethods())
 app.use(instaRouter.routes())
 app.use(instaRouter.allowedMethods())
+app.use(bookingRouter.routes())
+app.use(bookingRouter.allowedMethods())
 
 export default app

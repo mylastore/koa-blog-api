@@ -1,5 +1,5 @@
 import Quote from '../models/Quote'
-import utils from '../middleware/utils'
+import {sendQuoteEmail, sendAuthorEmail} from '../middleware/utils'
 import mongoError from '../middleware/mongoErrors'
 import { validateEmail, validateRequired } from '../middleware/validate'
 
@@ -54,7 +54,7 @@ class QuoteController {
             if (!quote) {
                 console.log('Could not save quote')
             }
-            await utils.sendQuoteEmail(data).then(res => {
+            await sendQuoteEmail(data).then(res => {
                 ctx.body = { status: 200, message: 'Form was sent.' }
             })
         } catch (err) {
@@ -75,7 +75,7 @@ class QuoteController {
         if (!validName || !validMessage) {
             ctx.throw(422, 'Missing required data')
         }
-        await utils.sendAuthorEmail(data).then(() => {
+        await sendAuthorEmail(data).then(() => {
             ctx.body = { status: 200, message: 'Email was sent.' }
         })
     }

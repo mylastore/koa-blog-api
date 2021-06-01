@@ -1,16 +1,43 @@
 import crypto from 'crypto'
 import sendGridMail from '@sendgrid/mail'
+import path from "path";
+import fs from "fs";
 
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
-
-var utils = {}
 
 //sendgrid
 const appEmail = process.env.APP_EMAIL
 const appUrl = process.env.REQUEST_HOST
 const appName = process.env.APP_NAME
 
-utils.accountActivationEmail = async function(ctx, email, token) {
+export async function newAppointment(data){
+    const payload = {
+        from: data.email,
+        to: appEmail,
+        subject: `Booking Request @ ${appName}`,
+        template_id: 'd-c08d32e1cd5142048fdd91094f1d672d',
+        dynamic_template_data: {
+            name: data.name,
+            email: data.email,
+            address: data.address,
+            phone: data.phone,
+            additionalInfo: data.additionalInfo,
+            appointmentDate: data.appointmentDate,
+            time: data.time
+        }
+    }
+    await sendGridMail
+      .send(payload)
+      .then(res => {
+          console.log('res', res)
+      })
+      .catch(err => {
+          console.error(err)
+      })
+
+}
+
+export async function accountActivationEmail(ctx, email, token) {
     const link = `${appUrl}/user/activation/${token}`
     const data = {
         to: email,
@@ -31,7 +58,7 @@ utils.accountActivationEmail = async function(ctx, email, token) {
         })
 }
 
-utils.sendForgotPassword = async function(email, token) {
+export async function sendForgotPassword(email, token) {
     const link = `${appUrl}/user/reset/${token}`
     const msg = {
         to: email,
@@ -52,7 +79,7 @@ utils.sendForgotPassword = async function(email, token) {
         })
 }
 
-utils.sendNewUserEmail = async function(name, email) {
+export async function sendNewUserEmail(name, email) {
     const msg = {
         to: appEmail,
         from: appEmail, // Change to your verified sender
@@ -73,7 +100,7 @@ utils.sendNewUserEmail = async function(name, email) {
         })
 }
 
-utils.sendQuoteEmail = async function(data) {
+export async function sendQuoteEmail(data) {
     let { name, email, message, phone, website } = data
     if (name && email && message) {
         const data = {
@@ -102,7 +129,7 @@ utils.sendQuoteEmail = async function(data) {
     }
 }
 
-utils.sendAuthorEmail = async function(data) {
+export async function sendAuthorEmail(data) {
     let { name, email, message, authorEmail } = data
     const emailList = [authorEmail]
 
@@ -130,7 +157,7 @@ utils.sendAuthorEmail = async function(data) {
         })
 }
 
-utils.gravatar = email => {
+export function gravatar(email){
     const size = 200
     if (!email) return `https://gravatar.com/avatar/?s=${size}&d-mp`
     const md5 = crypto
@@ -140,7 +167,7 @@ utils.gravatar = email => {
     return `https://gravatar.com/avatar/${md5}?S=${size}&d=mp`
 }
 
-utils.parseJsonToObject = str => {
+export function parseJsonToObject(str){
     try {
         const obj = JSON.parse(str)
         return obj
@@ -149,21 +176,74 @@ utils.parseJsonToObject = str => {
     }
 }
 
-utils.gravatar = email => {
-    const size = 200
-    if (!email) return `https://gravatar.com/avatar/?s=${size}%d=mp`
-    const md5 = crypto
-        .createHash('md5')
-        .update(email)
-        .digest('hex')
-    return `https://gravatar.com/avatar/${md5}?s=${size}&d=mp`
+export function mkDirByPathSync(targetDir, opts) {
+    const isRelativeToScript = opts && opts.isRelativeToScript
+    const sep = path.sep
+    const initDir = path.isAbsolute(targetDir) ? sep : ''
+    const baseDir = isRelativeToScript ? __dirname : '.'
+
+    return targetDir.split(sep).reduce((parentDir, childDir) => {
+        const curDir = path.resolve(baseDir, parentDir, childDir)
+        try {
+            fs.mkdirSync(curDir)
+        } catch (err) {
+            if (err.code === 'EEXIST') {
+                // curDir already exists!
+                return curDir
+            }
+
+            // To avoid `EISDIR` error on Mac and `EACCES`-->`ENOENT` and `EPERM` on Windows
+            if (err.code === 'ENOENT') {
+                // Throw the original parentDir error on curDir `ENOENT` failure.
+                throw new Error(
+                  `EACCES: permission denied, mkdir '${parentDir}'`
+                )
+            }
+
+            const caughtErr =
+              ['EACCES', 'EPERM', 'EISDIR'].indexOf(err.code) > -1
+            if (
+              !caughtErr ||
+              (caughtErr && curDir === path.resolve(targetDir))
+            ) {
+                throw err // Throw if it's just the last created dir.
+            }
+        }
+        return curDir
+    }, initDir)
 }
 
-utils.isObjectEmpty = obj => {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) return false
+export async  function rmdir(dirPath, options = {}){
+    const { removeContentOnly = false, drillDownSymlinks = false } = options,
+      { promisify } = require('util'),
+      path = require('path'),
+      fs = require('fs'),
+      readdirAsync = promisify(fs.readdir),
+      unlinkAsync = promisify(fs.unlink),
+      rmdirAsync = promisify(fs.rmdir),
+      lstatAsync = promisify(fs.lstat) // fs.lstat can detect symlinks, fs.stat can't
+    let files
+
+    try {
+        files = await readdirAsync(dirPath)
+    } catch (e) {
+        throw new Error(e)
     }
-    return true
-}
 
-module.exports = utils
+    if (files.length) {
+        for (let fileName of files) {
+            let filePath = path.join(dirPath, fileName),
+              fileStat = await lstatAsync(filePath),
+              isSymlink = fileStat.isSymbolicLink(),
+              isDir = fileStat.isDirectory()
+
+            if (isDir || (isSymlink && drillDownSymlinks)) {
+                await rmdir(filePath)
+            } else {
+                await unlinkAsync(filePath)
+            }
+        }
+    }
+
+    if (!removeContentOnly) await rmdirAsync(dirPath)
+}

@@ -1,6 +1,6 @@
 'use strict'
 
-import rmdir from '../middleware/removeDirectory'
+import {rmdir} from '../middleware/utils'
 
 require('dotenv').config()
 

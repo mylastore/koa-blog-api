@@ -4,32 +4,33 @@ import Tag from '../models/Tag'
 import slugify from 'slugify'
 import stripHtml from 'string-strip-html'
 import mongoError from '../middleware/mongoErrors'
-import {isObjectEmpty} from '../middleware/utils'
-import rmdir from '../middleware/removeDirectory'
+import {rmdir} from '../middleware/utils'
+import {isObjectEmpty} from "../middleware/validate"
 
 class BlogController {
   constructor() {
     this.galID = []
   }
 
-  async getAllPublishBlogs(ctx){
+  //********* helper functions
+  async getPublishBlogs(ctx) {
     const body = ctx.request.body
-    let limit = body ? parseInt(body.limit) : 10
-    let skip = body ? parseInt(body.skip) : 0
-    try{
-      return await Blog.find({published: true})
-          .populate('categories', '_id name slug')
-          .populate('tags', '_id name slug')
-          .populate('postedBy', '_id name username')
-          .sort({createdAt: -1})
-          .skip(skip)
-          .limit(limit)
-          .select(
-            '_id title avatar slug visited excerpt categories tags postedBy createdAt'
-          )
-          .exec()
+    const limit = body.limit ? parseInt(body.limit) : 10
+    const skip = body.skip ? parseInt(body.skip) : 0
 
-    }catch (err){
+    try {
+      return await Blog.find({published: true})
+        .populate('categories', '_id name slug')
+        .populate('tags', '_id name slug')
+        .populate('postedBy', '_id name username')
+        .sort({createdAt: -1})
+        .skip(skip)
+        .limit(limit)
+        .select(
+          '_id title avatar slug visited excerpt categories tags postedBy createdAt'
+        )
+        .exec()
+    } catch (err) {
       return err
     }
   }
@@ -50,13 +51,14 @@ class BlogController {
     }
   }
 
-  async getBlogCount(){
-    try{
+  async getAllPublishBlogCount() {
+    try {
       return await Blog.countDocuments({published: true})
-    }catch (err){
+    } catch (err) {
       return err
     }
   }
+  //**************
 
   async blogImages(ctx, next) {
     try {
@@ -213,57 +215,50 @@ class BlogController {
   }
 
   async getAllUserBlogs(ctx) {
-    await Blog.find({postedBy: ctx.params.id})
-      .populate('categories', '_id name slug')
-      .populate('tags', '_id name slug')
-      .populate('postedBy', '_id name username')
-      .select('_id title slug visited tags postedBy published createdAt')
-      .exec()
-      .then(data => {
-        ctx.body = data
-      })
-      .catch(err => {
-        ctx.throw(422, err)
-      })
+    try {
+      return ctx.body = await Blog.find({postedBy: ctx.params.id})
+        .populate('categories', '_id name slug')
+        .populate('tags', '_id name slug')
+        .populate('postedBy', '_id name username')
+        .select('_id title slug visited tags postedBy published createdAt')
+    } catch (err) {
+      ctx.throw(422, err)
+    }
   }
 
   async getAllPublishedBlogs(ctx) {
-    try{
-      const blogs = await this.getAllPublishBlogs(ctx)
+    try {
+      const blogs = await this.getPublishBlogs(ctx)
+
       return ctx.body = {
         blogs: blogs,
         categories: await this.getCategories(),
         tags: await this.getTags(),
         size: blogs.length,
-        total: this.getBlogCount()
+        total: await this.getAllPublishBlogCount(),
       }
-    }catch (err){
+    } catch (err) {
       ctx.throw(422, err)
     }
   }
 
   async getBlog(ctx) {
-    await Blog.findOneAndUpdate(
-      {slug: ctx.params.slug},
-      {$inc: {visited: 1}},
-      {new: true, upsert: true}
-    )
-      .populate('categories', '_id name slug')
-      .populate('tags', '_id name slug')
-      .populate('postedBy', '_id name username')
-      .select(
-        '_id title published avatar content slug imgID visited metaTitle metaDescription categories tags postedBy createdAt'
+    try {
+      // we are using fineOneAndUpdate to add visited +1 to DB
+      return ctx.body = await Blog.findOneAndUpdate(
+        {slug: ctx.params.slug},
+        {$inc: {visited: 1}},
+        {new: true, upsert: true}
       )
-      .exec()
-      .then(data => {
-        if (!data) {
-          ctx.throw(422, {message: 'Blog not found.'})
-        }
-        ctx.body = data
-      })
-      .catch(err => {
-        ctx.throw(422, err)
-      })
+        .populate('categories', '_id name slug')
+        .populate('tags', '_id name slug')
+        .populate('postedBy', '_id name username')
+        .select(
+          '_id title published avatar content slug imgID visited metaTitle metaDescription categories tags postedBy createdAt'
+        )
+    } catch (err) {
+      ctx.throw(422, err)
+    }
   }
 
   async deleteBlog(ctx, next) {
@@ -290,20 +285,16 @@ class BlogController {
   }
 
   async getRelatedBlogs(ctx) {
-    const body = ctx.request.body
-    const {_id, categories} = body
+    const {_id, categories} = ctx.request.body
 
-    await Blog.find({_id: {$ne: _id}, categories: {$in: categories}})
-      .limit(3)
-      .populate('postedBy', '_id name username')
-      .select('title slug avatar excerpt postedBy createdAt updatedAt')
-      .exec()
-      .then(data => {
-        ctx.body = data
-      })
-      .catch(err => {
-        ctx.throw(422, err)
-      })
+    try {
+      return ctx.body = await Blog.find({_id: {$ne: _id}, categories: {$in: categories}})
+        .limit(3)
+        .populate('postedBy', '_id name username')
+        .select('title slug avatar excerpt postedBy createdAt updatedAt')
+    } catch (err) {
+      ctx.throw(422, err)
+    }
   }
 
   async search(ctx) {
@@ -311,16 +302,12 @@ class BlogController {
     if (!search || search === '') {
       ctx.throw(422, 'Search query is empty.')
     }
-
-    await Blog.find({$text: {$search: search}})
-      .select('title slug excerpt postedBy')
-      .exec()
-      .then(res => {
-        ctx.body = res
-      })
-      .catch(err => {
-        ctx.throw(422, err)
-      })
+    try {
+      return ctx.body = await Blog.find({$text: {$search: search}})
+        .select('title slug excerpt postedBy')
+    } catch (err) {
+      ctx.throw(422, err)
+    }
   }
 }
 
