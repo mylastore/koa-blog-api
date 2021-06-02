@@ -303,14 +303,6 @@ class UserController {
     ctx.body = ctx.state.user
   }
 
-  async getAdminSettings(ctx) {
-    try {
-      return ctx.body = await User.findOne({username: ctx.params.username, role: 'admin'}).select('settings')
-    } catch (err) {
-      ctx.throw(422, err)
-    }
-  }
-
   async getProfile(ctx) {
     try {
       return ctx.body = await User.findOne({username: ctx.params.username})
@@ -469,44 +461,30 @@ class UserController {
     }
   }
 
-  /**
-   * update setting function
-   * @param {number} userId user id
-   * @param {boolean} newUser new user email true or false
-   * @param {boolean} newQuote new quote email true or false
-   *  @throws {Object} error
-   *  @return {Object} user object
-   */
+  async getAdminSettings(ctx) {
+    try {
+      return ctx.body = await User.findOne({
+        username: ctx.params.username,
+        role: 'admin'
+      }).select('settings')
+    } catch (err) {
+      ctx.throw(422, err)
+    }
+  }
+
   async updateSettings(ctx) {
     try {
-      const userData = ctx.request.body
-      const userId = userData.userId
-      if (!userData) ctx.throw(422, 'Invalid data!')
+      const body = ctx.request.body
+
+      if (!body) ctx.throw(422, 'Invalid data!')
+
       const obj = {
         settings: {
-          newUser: userData.newUser,
-          newQuote: userData.newQuote,
+          newUser: body.newUser,
+          newQuote: body.newQuote,
         },
       }
-      const user = await User.findByIdAndUpdate({_id: userId}, obj, {new: true})
-      const settingId = process.env.SETTING_ID
-
-      if (user && settingId) {
-        const settingsObject = {
-          settingId: settingId,
-          newUser: userData.newUser,
-          newQuote: userData.newQuote,
-        }
-        // Update local settings file
-        _data.update('settings', settingId, settingsObject, function (
-          err
-        ) {
-          if (err) {
-            ctx.throw(422, 'Could not update settings.')
-          }
-        })
-        ctx.body = user.toAuthJSON(ctx)
-      }
+      ctx.body = await User.findByIdAndUpdate({_id: body.userId}, obj, {new: true}).select({settings: 1})
     } catch (error) {
       ctx.throw(error)
     }

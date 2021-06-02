@@ -63,16 +63,16 @@ router.post('/api/quote', async (ctx, next) => {
 })
 
 // ADMIN USER ROUTES
-router.post('/api/user/settings/:username', auth.isAdmin, async (ctx, next) => {
-    await userController.getAdminSettings(ctx)
-})
-
 router.get('/api/admin/users/:page', auth.isAdmin, async (ctx, next) => {
     await userController.adminGetUsers(ctx)
 })
 
 router.get('/api/admin/user/:id', auth.isAdmin, async (ctx, next) => {
     await userController.adminGetUser(ctx)
+})
+
+router.post('/api/user/settings/:username', auth.isAdmin, async (ctx, next) => {
+    await userController.getAdminSettings(ctx)
 })
 
 router.patch('/api/admin/update-settings', auth.isAdmin, async (ctx, next) => {

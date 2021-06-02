@@ -107,7 +107,7 @@ Here I place any custom middleware the app is using. The custom middleware we're
 
 ### models
 
-Our models folder are where database calls are made. This keeps things nice and neat - also make actions reusable for the future. Validation is perform on the models.
+The model directory is where database calls are made. This keeps things nice and neat - also make actions reusable for the future. Validation is perform on the models.
 
 ### routes
 
