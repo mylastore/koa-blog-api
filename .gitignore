@@ -2,6 +2,7 @@ node_modules
 .idea
 .env
 env.env
+production.env
 
 # misc
 .DS_Store
