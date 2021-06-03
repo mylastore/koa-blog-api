@@ -10,6 +10,7 @@
     "build": "NODE_ENV=production babel src -d build && npm run pretty",
     "pretty": "prettier --write --print-width 80 --single-quote --trailing-comma es5 --tab-width 4 --no-semi 'src/**/*.js' 'tests/**/*.js'",
     "production": "NODE_ENV=production pm2 start ecosystem.json",
+    "live": "NODE_ENV=production node app.js --exec",
     "clean": "npm cache clean --force",
     "seed": "node -r esm src/seed/seed.js"
   },
