@@ -1,6 +1,6 @@
 'use strict'
 
-import {rmdir} from '../middleware/utils'
+import { rmdir } from '../middleware/utils'
 
 require('dotenv').config()
 
@@ -73,14 +73,11 @@ class SeedData {
 
 const dbUri = process.env.DB_URI
 mongoose
-    .connect(
-        dbUri,
-        {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }
-    )
+    .connect(dbUri, {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
     .then(async () => {
         const db = new SeedData()
         await db.seedDb()

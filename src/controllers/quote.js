@@ -1,5 +1,5 @@
 import Quote from '../models/Quote'
-import {sendQuoteEmail, sendAuthorEmail} from '../middleware/utils'
+import { sendQuoteEmail, sendAuthorEmail } from '../middleware/utils'
 import mongoError from '../middleware/mongoErrors'
 import { validateEmail, validateRequired } from '../middleware/validate'
 

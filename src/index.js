@@ -35,15 +35,12 @@ const mongoDB = process.env.DB_URI
  */
 
 mongoose
-    .connect(
-        mongoDB,
-        {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false,
-        }
-    )
+    .connect(mongoDB, {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    })
     .then(() => console.log('DB: ', mongoDB))
     .catch(err => console.log(err))
 
@@ -107,9 +104,7 @@ app.use(async function responseTime(ctx, next) {
 //For cors with options
 app.use(
     cors({
-        origins: [
-            `${process.env.REQUEST_HOST}`,
-        ],
+        origins: [`${process.env.REQUEST_HOST}`],
     })
 )
 

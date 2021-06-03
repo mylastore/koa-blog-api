@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import sendGridMail from '@sendgrid/mail'
-import path from "path";
-import fs from "fs";
+import path from 'path'
+import fs from 'fs'
 
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -10,7 +10,7 @@ const appEmail = process.env.APP_EMAIL
 const appUrl = process.env.REQUEST_HOST
 const appName = process.env.APP_NAME
 
-export async function newAppointment(data){
+export async function newAppointment(data) {
     const payload = {
         from: data.email,
         to: appEmail,
@@ -23,18 +23,17 @@ export async function newAppointment(data){
             phone: data.phone,
             additionalInfo: data.additionalInfo,
             appointmentDate: data.appointmentDate,
-            time: data.time
-        }
+            time: data.time,
+        },
     }
     await sendGridMail
-      .send(payload)
-      .then(res => {
-          console.log('res', res)
-      })
-      .catch(err => {
-          console.error(err)
-      })
-
+        .send(payload)
+        .then(res => {
+            console.log('res', res)
+        })
+        .catch(err => {
+            console.error(err)
+        })
 }
 
 export async function accountActivationEmail(ctx, email, token) {
@@ -157,7 +156,7 @@ export async function sendAuthorEmail(data) {
         })
 }
 
-export function gravatar(email){
+export function gravatar(email) {
     const size = 200
     if (!email) return `https://gravatar.com/avatar/?s=${size}&d-mp`
     const md5 = crypto
@@ -167,7 +166,7 @@ export function gravatar(email){
     return `https://gravatar.com/avatar/${md5}?S=${size}&d=mp`
 }
 
-export function parseJsonToObject(str){
+export function parseJsonToObject(str) {
     try {
         const obj = JSON.parse(str)
         return obj
@@ -196,15 +195,15 @@ export function mkDirByPathSync(targetDir, opts) {
             if (err.code === 'ENOENT') {
                 // Throw the original parentDir error on curDir `ENOENT` failure.
                 throw new Error(
-                  `EACCES: permission denied, mkdir '${parentDir}'`
+                    `EACCES: permission denied, mkdir '${parentDir}'`
                 )
             }
 
             const caughtErr =
-              ['EACCES', 'EPERM', 'EISDIR'].indexOf(err.code) > -1
+                ['EACCES', 'EPERM', 'EISDIR'].indexOf(err.code) > -1
             if (
-              !caughtErr ||
-              (caughtErr && curDir === path.resolve(targetDir))
+                !caughtErr ||
+                (caughtErr && curDir === path.resolve(targetDir))
             ) {
                 throw err // Throw if it's just the last created dir.
             }
@@ -213,15 +212,15 @@ export function mkDirByPathSync(targetDir, opts) {
     }, initDir)
 }
 
-export async  function rmdir(dirPath, options = {}){
+export async function rmdir(dirPath, options = {}) {
     const { removeContentOnly = false, drillDownSymlinks = false } = options,
-      { promisify } = require('util'),
-      path = require('path'),
-      fs = require('fs'),
-      readdirAsync = promisify(fs.readdir),
-      unlinkAsync = promisify(fs.unlink),
-      rmdirAsync = promisify(fs.rmdir),
-      lstatAsync = promisify(fs.lstat) // fs.lstat can detect symlinks, fs.stat can't
+        { promisify } = require('util'),
+        path = require('path'),
+        fs = require('fs'),
+        readdirAsync = promisify(fs.readdir),
+        unlinkAsync = promisify(fs.unlink),
+        rmdirAsync = promisify(fs.rmdir),
+        lstatAsync = promisify(fs.lstat) // fs.lstat can detect symlinks, fs.stat can't
     let files
 
     try {
@@ -233,9 +232,9 @@ export async  function rmdir(dirPath, options = {}){
     if (files.length) {
         for (let fileName of files) {
             let filePath = path.join(dirPath, fileName),
-              fileStat = await lstatAsync(filePath),
-              isSymlink = fileStat.isSymbolicLink(),
-              isDir = fileStat.isDirectory()
+                fileStat = await lstatAsync(filePath),
+                isSymlink = fileStat.isSymbolicLink(),
+                isDir = fileStat.isDirectory()
 
             if (isDir || (isSymlink && drillDownSymlinks)) {
                 await rmdir(filePath)

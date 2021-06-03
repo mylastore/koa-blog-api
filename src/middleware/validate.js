@@ -15,7 +15,7 @@ export function validateEmail(val) {
     ).test(val)
 }
 
-export function isObjectEmpty(obj){
+export function isObjectEmpty(obj) {
     for (let key in obj) {
         if (obj.hasOwnProperty(key)) return false
     }
