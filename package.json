@@ -20,6 +20,7 @@
     "@sendgrid/mail": "^7.3.0",
     "bcrypt": "^5.0.0",
     "dotenv": "^6.0.0",
+    "esm": "^3.2.25",
     "express-session": "^1.17.0",
     "faker": "^4.1.0",
     "formidable": "^1.2.2",
