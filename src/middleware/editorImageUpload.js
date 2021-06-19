@@ -51,37 +51,45 @@ const uploadImages = async (ctx, next) => {
         return next()
     }
 
-    let file = ctx.request.files.avatar
-    const picReg = /\.(png|jpeg?g|gif|svg|webp|jpg)$/i
-    if (!picReg.test(file.name)) {
-        ctx.throw(422, 'File format not supported')
-    }
-
-    let fileName = file.name
-        .replace(/\s/g, '')
-        .split('.')
-        .slice(0, -1)
-        .join('.')
     let target = BASE_DIR + 'img-' + date
     let galID = 'img-' + date
-    let filePath = path.join(BASE_DIR, galID, fileName + '.webp') //Stitching file names
-    let fileUrl = path.join(galID, fileName + '.webp')
+ 
+
+    ctx.request.body.images = []
 
     try {
         mkDirByPathSync(target)
-        const result = await sharp(ctx.request.files.avatar.path)
-            .resize(800, 400)
-            .webp({ quality: 80 })
-            .toFile(filePath)
 
-        if (result) {
-            ctx.request.files.avatar.path = {
-                galID: galID,
-                imgUrl: `http://localhost:8000/${fileUrl}`,
-                imgName: fileName,
-                imgSize: result.size,
-            }
-        }
+        await Promise.all(
+            ctx.request.files.avatar.map(async (file, i) => {
+                let filePath = path.join(BASE_DIR, galID, file.name + '.webp') //Stitching file names
+                let fileUrl = path.join(galID, file.name + '.webp')    
+       
+          
+             await sharp(file.path)
+              .resize(700, 800)
+              .toFormat('jpeg')
+              .jpeg({ quality: 90 })
+              .toFile(filePath);
+          
+             ctx.request.body.images.push(fileUrl);
+            })
+           );
+          
+
+        // const result = await sharp(ctx.request.files.avatar.path)
+        //     .resize(800, 400)
+        //     .webp({ quality: 80 })
+        //     .toFile(filePath)
+
+        // if (result) {
+        //     ctx.request.files.avatar.path = {
+        //         galID: galID,
+        //         imgUrl: `http://localhost:8000/${fileUrl}`,
+        //         imgName: fileName,
+        //         imgSize: result.size,
+        //     }
+        // }
         return next()
     } catch (err) {
         ctx.throw(422, err)

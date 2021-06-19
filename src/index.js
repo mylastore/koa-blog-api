@@ -22,6 +22,7 @@ import blogRouter from './routes/blog'
 import authRouter from './routes/auth'
 import instaRouter from './routes/instagram'
 import bookingRouter from './routes/booking'
+import uploadRouter from './routes/upload'
 
 const mongoDB = process.env.DB_URI
 
@@ -116,7 +117,7 @@ app.use(
         formLimit: '1mb',
         multipart: true, // Allow multiple files to be uploaded
         formidable: {
-            maxFileSize: 5 * 1024 * 1024, // max size 5mb
+            maxFileSize: 30 * 1024 * 1024, // max size 30mb
             keepExtensions: true, //  Extensions to save images
             onFileBegin: (name, file) => {
                 const fileName = file.name
@@ -160,5 +161,7 @@ app.use(instaRouter.routes())
 app.use(instaRouter.allowedMethods())
 app.use(bookingRouter.routes())
 app.use(bookingRouter.allowedMethods())
+app.use(uploadRouter.routes())
+app.use(uploadRouter.allowedMethods())
 
 export default app
