@@ -57,7 +57,7 @@
     "@babel/register": "^7.13.16",
     "jest": "^26.4.0",
     "nodemon": "^2.0.4",
-    "prettier": "^1.13.4"
+    "prettier": "^1.19.1"
   },
   "keywords": [
     "koa",
