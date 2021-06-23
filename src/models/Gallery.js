@@ -4,11 +4,10 @@ const Schema = mongoose.Schema
 
 const gallerySchema = new Schema(
     {
-        gallery: [{ type: String }],
-        listingId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Listing',
-        },
+        name: [{ type: String }],
+        images: [{type: String}],
+        thumbs: [{type: String}],
+        default: {type: String}
     },
     { timestamps: true }
 )
